@@ -17,10 +17,10 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
 		MemberRequestDto.SignupRequestDto request = (MemberRequestDto.SignupRequestDto) value;
 		if(request.getPassword().isBlank() || request.getPassword() == null) return true; // 비밀번호가 올바르지 않을 경우 검증 X
 
-		boolean isValid = request.getPasswordCheck() == request.getPassword();
+		boolean isValid = request.getPasswordCheck().equals(request.getPassword());
 		if(!isValid){
 			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate("올바른 이메일 형식으로 작성해주세요").addConstraintViolation();
+			context.buildConstraintViolationWithTemplate("비밀번호가 일치하지 않아요!").addConstraintViolation();
 		}
 
 		return isValid;
