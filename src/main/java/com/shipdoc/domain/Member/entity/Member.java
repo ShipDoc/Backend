@@ -34,7 +34,7 @@ public class Member extends BaseEntity {
 	private Long id;
 
 	@Column(name = "login_id", nullable = false)
-	private String login_id;
+	private String loginId;
 
 	@Column(name = "password", nullable = false)
 	private String password;
@@ -42,16 +42,22 @@ public class Member extends BaseEntity {
 	@Column(name = "phone")
 	private String phone;
 
+	@Column(name = "refresh_token")
+	private String refreshToken;
 
 
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<MemberRole> memberRoleList = new ArrayList<>();
+	private List<MemberRole> memberRoleList;
 
 	// 연관 관계 편의 메서드
 	public void addMemberRole(MemberRole memberRole){
 		memberRoleList.add(memberRole);
 		memberRole.setMember(this);
+	}
+
+	public void changeRefreshToken(String refreshToken){
+		this.refreshToken = refreshToken;
 	}
 
 
