@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class MemberRole extends BaseEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -38,7 +39,12 @@ public class MemberRole extends BaseEntity {
 	private Role role;
 
 	// 연관 관계 편의 메서드
-	public void setMember(Member member){this.member = member;}
-	public void setRole(Role role){this.role = role;}
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 }
