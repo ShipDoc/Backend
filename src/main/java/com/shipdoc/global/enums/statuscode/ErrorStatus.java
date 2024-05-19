@@ -12,9 +12,8 @@ public enum ErrorStatus implements BaseCode {
 	_PAGE_VARIABLE_INVALID(HttpStatus.BAD_REQUEST, "PAGE4001", "요청한 페이지 혹은 페이지당 요소 개수는 0보다 커야합니다."),
 
 	// Member
-	_MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, "USER4001", "존재하지 않는 사용자입니다."),
-	_EXIST_LOGINID(HttpStatus.BAD_REQUEST, "USER4002", "이미 존재하는 로그인 ID 입니다.");
-
+	_MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4001", "존재하지 않는 사용자입니다."),
+	_EXIST_LOGINID(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 존재하는 로그인 ID 입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
