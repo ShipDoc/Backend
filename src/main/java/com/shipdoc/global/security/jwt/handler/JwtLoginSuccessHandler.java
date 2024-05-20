@@ -2,15 +2,12 @@ package com.shipdoc.global.security.jwt.handler;
 
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shipdoc.global.enums.statuscode.SuccessStatus;
 import com.shipdoc.global.response.ApiResponse;
 import com.shipdoc.global.security.jwt.JwtService;
 
@@ -41,7 +38,7 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 		log.info("Jwt Login Success :: Login ID = {}", loginId);
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().write(objectMapper.writeValueAsString(
-			ApiResponse.onFailure(SuccessStatus._OK.getCode(), SuccessStatus._OK.getMessage(), "로그인에 성공했습니다.")));
+			ApiResponse.onSuccess("로그인에 성공했습니다.")));
 		loginSuccess(response, loginId);
 	}
 
