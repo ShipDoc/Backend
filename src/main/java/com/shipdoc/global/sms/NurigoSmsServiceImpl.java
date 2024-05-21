@@ -7,6 +7,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import net.nurigo.sdk.NurigoApp;
@@ -17,17 +18,17 @@ import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
-public class NurigoSmsServiceImpl {
+public class NurigoSmsServiceImpl implements SmsSentService{
 	private final DefaultMessageService defaultMessageService;
 
-	@Value("${sms.nurigo.api-key}")
-	private String apiKey;
+	@Value("${sms.nurigo.sender-number}")
+	private String senderNumber;
 
-	@Value("${sms.nurigo.api-secret}")
-	private String apiSecret;
-
-	public NurigoSmsServiceImpl() {
+	public NurigoSmsServiceImpl(@Value("${sms.nurigo.api-key}") String apiKey, @Value("${sms.nurigo.api-secret}") String apiSecret ) {
 		this.defaultMessageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.coolsms.co.kr");
 	}
 
@@ -35,24 +36,26 @@ public class NurigoSmsServiceImpl {
 	 * 단일 메세지 전송
 	 */
 
-	public SingleMessageSentResponse sendMessage() {
+	@Async
+	public void sendMessage(String receiverNumber, String messageText) {
 		Message message = new Message();
 		// 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-		message.setFrom("발신번호 입력");
-		message.setTo("수신번호 입력");
-		message.setText("한글 45자, 영자 90자 이하 입력되면 자동으로 SMS타입의 메시지가 추가됩니다.");
+		message.setFrom(senderNumber);
+		message.setTo(receiverNumber);
+		message.setText(messageText); // 한글 45자, 영자 90자 이하 입력되면 자동으로 SMS타입의 메시지
 
 		SingleMessageSentResponse response = this.defaultMessageService.sendOne(
 			new SingleMessageSendingRequest(message));
-		System.out.println(response);
-
-		return response;
+		log.info(response.toString());
 	}
+
+
 
 	/**
 	 * 메세지 예약 발송
 	 */
-	public MultipleDetailMessageSentResponse sendScheduledMessage() {
+	@Async
+	public void sendScheduledMessage(String receiverNumber, String messageText, String time) {
 		Message message = new Message();
 		// 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
 		message.setFrom("발신번호 입력");
@@ -70,14 +73,12 @@ public class NurigoSmsServiceImpl {
 
 			System.out.println(response);
 
-			return response;
 		} catch (NurigoMessageNotReceivedException exception) {
 			System.out.println(exception.getFailedMessageList());
 			System.out.println(exception.getMessage());
 		} catch (Exception exception) {
 			System.out.println(exception.getMessage());
 		}
-		return null;
 	}
 
 }
