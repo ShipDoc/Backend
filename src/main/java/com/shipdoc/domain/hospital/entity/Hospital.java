@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +33,7 @@ public class Hospital {
 	private Long id;
 
 	@Column(name = "kakao_id")
-	private Long kakaoId;
+	private String kakaoId;
 
 	@Column(name = "hospital_name")
 	private String name;
@@ -46,14 +47,20 @@ public class Hospital {
 	@Column(name = "longitude")
 	private Double longitude;
 
-	@OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
-	List<FavoriteHospital> favoriteHospitalList;
+	@Column(name = "photo_url")
+	private String photoUrl;
 
 	@OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
-	List<Review> reviewList;
+	private List<FavoriteHospital> favoriteHospitalList;
+
+	@OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Review> reviewList;
 
 	@OneToMany(mappedBy = "hospital", cascade = CascadeType.PERSIST)
-	List<Reservation> reservationList;
+	private List<Reservation> reservationList;
+
+	@OneToOne(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
+	private BusinessHours businessHours;
 
 	// 연관 관계 편의 메서드
 
@@ -72,4 +79,8 @@ public class Hospital {
 		reservation.changeHospital(this);
 	}
 
+	public void changeBusinessHours(BusinessHours businessHours) {
+		this.businessHours = businessHours;
+		businessHours.changeHospital(this);
+	}
 }
