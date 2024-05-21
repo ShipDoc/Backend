@@ -59,7 +59,7 @@ public class SecurityConfig {
 			.sessionManagement(session -> session.sessionCreationPolicy(
 				SessionCreationPolicy.STATELESS)) // Token 기반 인증 => session 사용 X
 			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/members").permitAll() // 허용된 주소
+				.requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/members", "/api/members/sms" ,"/api/members/sms/verify").permitAll() // 허용된 주소
 				.anyRequest().authenticated()
 			)
 			// CORS
