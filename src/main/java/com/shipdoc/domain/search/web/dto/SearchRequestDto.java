@@ -69,4 +69,21 @@ public class SearchRequestDto {
 		private HospitalSortCriteria sort;
 
 	}
+
+	@Getter
+	@Setter
+	public static class SearchHealthCheckupRequestDto{
+		@NotNull(message = "위도 좌표를 입력해주세요.")
+		private Double latitude;
+
+		@NotNull(message = "경도 좌표를 입력해주세요.")
+		private Double longitude;
+
+		@JsonProperty(defaultValue = "15")
+		@Min(value = 1, message = "한 페이지에 보일 수 있는 개수는 1보다 크거나 같아야합니다.")
+		@Max(value = 45, message = "한 페이지에 보일 수 있는 최대 개수는 15개 입니다.")
+		private Long size;
+
+		private HospitalSortCriteria sort;
+	}
 }

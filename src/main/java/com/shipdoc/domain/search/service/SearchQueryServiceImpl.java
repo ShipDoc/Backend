@@ -24,6 +24,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 	private final NearbySearchService nearbySearchService;
 	private final HospitalCommandService hospitalCommandService;
 
+	@Override
 	public SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithSymptom(
 		SearchRequestDto.SearchSymptomRequestDto request) {
 		List<MedicalDepartment> categoryList = request.getSymptomList()
@@ -38,6 +39,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 		return SearchConverter.toSearchQueryResponseDto(hospitalCommandService.saveNotExistHospitals(placeDetailList));
 	}
 
+	@Override
 	public SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithCategory(
 		SearchRequestDto.SearchCategoryRequestDto request) {
 		boolean hasOtherCategory = false;
@@ -59,6 +61,16 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 		}
 		Collections.sort(placeDetailList);
 
+		return SearchConverter.toSearchQueryResponseDto(hospitalCommandService.saveNotExistHospitals(placeDetailList));
+	}
+
+	@Override
+	public SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithHealthCheckup(
+		SearchRequestDto.SearchHealthCheckupRequestDto request) {
+		List<KakaoResponseDto.PlaceDetail> placeDetailList = nearbySearchService.findByKeyword("내과", request.getLatitude(),
+			request.getLongitude(), request.getSize(), request.getSort());
+
+		Collections.sort(placeDetailList);
 		return SearchConverter.toSearchQueryResponseDto(hospitalCommandService.saveNotExistHospitals(placeDetailList));
 	}
 }

@@ -31,4 +31,10 @@ public class SearchRestController {
 		@Valid @RequestBody SearchRequestDto.SearchCategoryRequestDto request) {
 		return ApiResponse.onSuccess(searchQueryService.getNearbyHospitalWithCategory(request));
 	}
+
+	@PostMapping("/health-checkup")
+	public ApiResponse<SearchResponseDto.SearchQueryResponseDto> searchWithHealthCheckup(
+		@Valid @RequestBody SearchRequestDto.SearchHealthCheckupRequestDto request) {
+		return ApiResponse.onSuccess(searchQueryService.getNearbyHospitalWithHealthCheckup(request));
+	}
 }
