@@ -50,6 +50,12 @@ public class Hospital {
 	@Column(name = "photo_url")
 	private String photoUrl;
 
+	@Column(name = "phone")
+	private String phoneNumber;
+
+	@Column(name = "kakao_url")
+	private String kakaoUrl;
+
 	@OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<FavoriteHospital> favoriteHospitalList;
 

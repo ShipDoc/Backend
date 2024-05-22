@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.shipdoc.domain.hospital.service.HospitalCommandService;
+import com.shipdoc.domain.hospital.web.dto.HospitalResponseDto;
 import com.shipdoc.domain.search.converter.SearchConverter;
 import com.shipdoc.domain.search.enums.MedicalDepartment;
 import com.shipdoc.domain.search.enums.Symptom;
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SearchQueryServiceImpl implements SearchQueryService {
 	private final NearbySearchService nearbySearchService;
+	private final HospitalCommandService hospitalCommandService;
 
 	public SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithSymptom(
 		SearchRequestDto.SearchSymptomRequestDto request) {
@@ -32,7 +35,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 			request.getLatitude(), request.getLongitude(), request.getSize(), request.getSort());
 		Collections.sort(placeDetailList);
 
-		return SearchConverter.toSearchQueryResponseDto(placeDetailList);
+		return SearchConverter.toSearchQueryResponseDto(hospitalCommandService.saveNotExistHospitals(placeDetailList));
 	}
 
 	public SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithCategory(
@@ -55,6 +58,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 				request.getLongitude(), request.getSize(), request.getKeyword(), request.getSort());
 		}
 		Collections.sort(placeDetailList);
-		return SearchConverter.toSearchQueryResponseDto(placeDetailList);
+
+		return SearchConverter.toSearchQueryResponseDto(hospitalCommandService.saveNotExistHospitals(placeDetailList));
 	}
 }

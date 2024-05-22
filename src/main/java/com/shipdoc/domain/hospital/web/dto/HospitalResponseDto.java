@@ -24,9 +24,9 @@ public class HospitalResponseDto {
 
 		private String address;
 
-		private String longitude;
+		private Double longitude;
 
-		private String latitude;
+		private Double latitude;
 
 		private BusinessHoursResponseDto businessHours;
 
@@ -45,5 +45,6 @@ public class HospitalResponseDto {
 		public String saturday;
 		public String sunday;
 		public String holiday;
+		public String breakTime;
 	}
 }

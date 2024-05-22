@@ -50,6 +50,9 @@ public class BusinessHours {
 	@Column(name = "holiday", nullable = false)
 	private String holiday;
 
+	@Column(name = "break_time")
+	private String breakTime;
+
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "hospital_id")
 	private Hospital hospital;
