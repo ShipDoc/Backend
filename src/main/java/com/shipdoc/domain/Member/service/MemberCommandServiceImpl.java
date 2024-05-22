@@ -2,7 +2,9 @@ package com.shipdoc.domain.Member.service;
 
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Random;
 
@@ -12,14 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shipdoc.domain.Member.converter.MemberConverter;
 import com.shipdoc.domain.Member.entity.Member;
+import com.shipdoc.domain.Member.entity.Patient;
 import com.shipdoc.domain.Member.entity.PhoneCertification;
 import com.shipdoc.domain.Member.entity.Role;
 import com.shipdoc.domain.Member.entity.mapping.MemberRole;
 import com.shipdoc.domain.Member.enums.Authority;
+import com.shipdoc.domain.Member.enums.FamilyRelation;
+import com.shipdoc.domain.Member.exception.PatientNotExistException;
 import com.shipdoc.domain.Member.repository.MemberRepository;
+import com.shipdoc.domain.Member.repository.PatientRepository;
 import com.shipdoc.domain.Member.repository.PhoneCertificationRepository;
 import com.shipdoc.domain.Member.repository.RoleRepository;
 import com.shipdoc.domain.Member.web.dto.MemberRequestDto;
+import com.shipdoc.domain.Member.web.dto.MemberResponseDto;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.exception.GeneralException;
 import com.shipdoc.global.sms.SmsSentService;
@@ -37,6 +44,8 @@ public class MemberCommandServiceImpl implements MemberCommandService{
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final SmsSentService smsSentService;
+
+	private final PatientRepository patientRepository;
 
 	private final PhoneCertificationRepository phoneCertificationRepository;
 
@@ -103,6 +112,53 @@ public class MemberCommandServiceImpl implements MemberCommandService{
 		phoneCertificationRepository.save(certification);
 	}
 
+	@Override
+	public MemberResponseDto.AddPatientResponseDto addPatient(MemberRequestDto.AddPatientRequestDto request, Member member){
+		Patient patient = Patient.builder()
+			.nationalityType(request.getNationalityType())
+			.name(request.getName())
+			.birth(extractBirthInRRN(request.getRRN()))
+			.familyRelation(FamilyRelation.CHILD) // 자녀로 고정 => 추후 필요한 경우 변경
+			.build();
+
+		member.addPatient(patient);
+
+		return MemberConverter.toAddPatientResponseDto(patientRepository.save(patient));
+	}
+
+
+	@Override
+	public void deletePatient(Long patientId, Member member) {
+		// 존재하는 환자 데이터인지 검증
+		Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotExistException());
+
+		// 만약 로그인 된 사용자에게 속한 환자 데이터가 아니라면 접근 권한 에러 발생
+		if(patient.getMember() != member) throw new GeneralException(ErrorStatus._PATIENT_DELETE_FORBIDDEN);
+		patientRepository.delete(patient);
+	}
+
+	private LocalDate extractBirthInRRN(String rrn){
+		String birthDatePart = rrn.substring(0, 6);
+		char centuryIndicator = rrn.charAt(6);
+
+		String birthYearPrefix;
+		switch (centuryIndicator) {
+			case '1': case '2': // 1900-1999
+				birthYearPrefix = "19";
+				break;
+			case '3': case '4': // 2000-2099
+				birthYearPrefix = "20";
+				break;
+			default:
+				birthYearPrefix = "18";
+				break;
+		}
+
+		String fullBirthDate = birthYearPrefix + birthDatePart;
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+		return LocalDate.parse(fullBirthDate, formatter);
+	}
 
 	private void sendCodeMessage(String verificationCode, String phoneNumber){
 		String messageText = "[쉽닥]\n"
@@ -123,5 +179,6 @@ public class MemberCommandServiceImpl implements MemberCommandService{
 		Duration duration = Duration.between(timeToCheck, now);
 		return Math.abs(duration.toMinutes()) <= 3;
 	}
+
 }
 

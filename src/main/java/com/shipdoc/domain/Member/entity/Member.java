@@ -51,13 +51,13 @@ public class Member extends BaseEntity {
 	private List<MemberRole> memberRoleList;
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	List<FavoriteHospital> favoriteHospitalList;
+	private	List<FavoriteHospital> favoriteHospitalList;
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	List<Review> reviewList;
+	private List<Review> reviewList;
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	List<Reservation> reservationList;
+	private List<Patient> patientList;
 
 	// 연관 관계 편의 메서드
 	public void addMemberRole(MemberRole memberRole) {
@@ -81,9 +81,9 @@ public class Member extends BaseEntity {
 		review.changeMember(this);
 	}
 
-	public void addReservation(Reservation reservation) {
-		reservationList.add(reservation);
-		reservation.changeMember(this);
+	public void addPatient(Patient patient){
+		patientList.add(patient);
+		patient.changeMember(this);
 	}
 
 }

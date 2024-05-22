@@ -9,4 +9,6 @@ public interface MemberQueryService {
 	Optional<Member> getMemberWithAuthorities(String loginId);
 	void certificateCheck(String phoneNumber, String verifyCode);
 
+
+
 }

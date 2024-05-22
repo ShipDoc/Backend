@@ -17,7 +17,9 @@ public enum ErrorStatus implements BaseCode {
 	_EXIST_LOGINID(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 존재하는 로그인 ID 입니다."),
 	_EXIST_CODE_REQUEST(HttpStatus.BAD_REQUEST, "MEMBER4003", "최근 3분 이내에 요청한 인증번호가 존재합니다."),
 	_INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "MEMBER4004", "올바르지 않은 인증코드입니다."),
-	_EXPIRED_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "MEMBER4005", "유효기간이 만료된 코드입니다. 인증번호를 다시 요청해주세요.");
+	_EXPIRED_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "MEMBER4005", "유효기간이 만료된 코드입니다. 인증번호를 다시 요청해주세요."),
+	_PATIENT_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4006", "존재하지 않는 회원입니다."),
+	_PATIENT_DELETE_FORBIDDEN(HttpStatus.FORBIDDEN, "MEMBER4007", "삭제 권한이 없습니다.");
 
 
 	private final HttpStatus httpStatus;
