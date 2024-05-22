@@ -4,6 +4,7 @@ package com.shipdoc.domain.Member.converter;
 import java.util.ArrayList;
 
 import com.shipdoc.domain.Member.entity.Member;
+import com.shipdoc.domain.Member.entity.Patient;
 import com.shipdoc.domain.Member.web.dto.MemberRequestDto;
 import com.shipdoc.domain.Member.web.dto.MemberResponseDto;
 
@@ -23,4 +24,12 @@ public class MemberConverter {
 			.createdAt(member.getCreatedAt())
 			.build();
 	}
+
+	public static MemberResponseDto.AddPatientResponseDto toAddPatientResponseDto(Patient patient){
+		return MemberResponseDto.AddPatientResponseDto.builder()
+			.patientId(patient.getId())
+			.createdAt(patient.getCreatedAt())
+			.build();
+	}
+
 }

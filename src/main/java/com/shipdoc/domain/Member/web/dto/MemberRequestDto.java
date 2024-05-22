@@ -1,6 +1,10 @@
 package com.shipdoc.domain.Member.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.shipdoc.domain.Member.enums.FamilyRelation;
+import com.shipdoc.domain.Member.enums.NationalityType;
 import com.shipdoc.domain.Member.validation.annotation.PasswordMatch;
+import com.shipdoc.domain.Member.validation.annotation.ValidateRRN;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -47,4 +51,30 @@ public class MemberRequestDto {
 		@Pattern(regexp = "^010\\d{4}\\d{4}$", message = "올바른 전화번호를 입력해 주세요.")
 		private String phoneNumber;
 	}
+
+	@Getter
+	@Setter
+	public static class RRNVerificationRequestDto{
+		@JsonProperty("RRN")
+		@ValidateRRN
+		private String RRN;
+	}
+
+	@Getter
+	@Setter
+	public static class AddPatientRequestDto{
+		@JsonProperty("RRN")
+		@ValidateRRN
+		private String RRN;
+
+		private NationalityType nationalityType;
+
+		@NotBlank(message = "이름을 입력해주세요.")
+		private String name;
+
+		
+		// 자녀 형식으로만 추가
+		// private FamilyRelation familyRelation;
+	}
+
 }

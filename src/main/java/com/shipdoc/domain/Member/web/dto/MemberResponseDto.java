@@ -20,4 +20,13 @@ public class MemberResponseDto {
 		private Long memberId;
 		private LocalDateTime createdAt;
 	}
+
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class AddPatientResponseDto{
+		private Long patientId;
+		private LocalDateTime createdAt;
+	}
 }
