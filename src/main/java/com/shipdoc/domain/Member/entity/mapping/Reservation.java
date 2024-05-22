@@ -3,6 +3,7 @@ package com.shipdoc.domain.Member.entity.mapping;
 import java.time.LocalDateTime;
 
 import com.shipdoc.domain.Member.entity.Member;
+import com.shipdoc.domain.Member.entity.Patient;
 import com.shipdoc.domain.hospital.entity.Hospital;
 
 import jakarta.persistence.Column;
@@ -35,17 +36,19 @@ public class Reservation {
 	private LocalDateTime reservationTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hospital_id")
 	private Hospital hospital;
 
+
+
 	// 연관 관계 편의 메서드
 
-	public void changeMember(Member member) {
-		this.member = member;
+	public void changePatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	public void changeHospital(Hospital hospital) {
