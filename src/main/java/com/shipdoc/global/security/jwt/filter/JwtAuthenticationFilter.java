@@ -1,9 +1,9 @@
 package com.shipdoc.global.security.jwt.filter;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,7 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.shipdoc.domain.Member.entity.Member;
+import com.shipdoc.domain.Member.enums.Authority;
 import com.shipdoc.domain.Member.repository.MemberRepository;
+import com.shipdoc.domain.Member.repository.MemberRoleRepository;
 import com.shipdoc.domain.Member.service.MemberQueryService;
 import com.shipdoc.global.security.jwt.JwtService;
 
@@ -31,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtService jwtService;
 	private final MemberRepository memberRepository;
 	private final MemberQueryService memberQueryService;
+	private final MemberRoleRepository memberRoleRepository;
 
 	/**
 	 * 로그인 요청 시 JWT 검증 X
@@ -109,11 +112,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			password = UUID.randomUUID().toString();
 		}
 
-		Set<SimpleGrantedAuthority> authorities = myMember.getMemberRoleList()
-			.stream()
-			.map(authority -> new SimpleGrantedAuthority(authority.getRole().getAuthority().toString()))
-			.collect(
-				Collectors.toSet());
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(Authority.ROLE_USER.toString()));
 
 		UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
 			.username(myMember.getLoginId())
