@@ -11,7 +11,6 @@ public enum ErrorStatus implements BaseCode {
 
 	_PAGE_VARIABLE_INVALID(HttpStatus.BAD_REQUEST, "PAGE4001", "요청한 페이지 혹은 페이지당 요소 개수는 0보다 커야합니다."),
 
-
 	// Member
 	_MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4001", "존재하지 않는 사용자입니다."),
 	_EXIST_LOGINID(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 존재하는 로그인 ID 입니다."),
@@ -19,8 +18,10 @@ public enum ErrorStatus implements BaseCode {
 	_INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "MEMBER4004", "올바르지 않은 인증코드입니다."),
 	_EXPIRED_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "MEMBER4005", "유효기간이 만료된 코드입니다. 인증번호를 다시 요청해주세요."),
 	_PATIENT_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4006", "존재하지 않는 회원입니다."),
-	_PATIENT_DELETE_FORBIDDEN(HttpStatus.FORBIDDEN, "MEMBER4007", "삭제 권한이 없습니다.");
+	_PATIENT_DELETE_FORBIDDEN(HttpStatus.FORBIDDEN, "MEMBER4007", "삭제 권한이 없습니다."),
 
+	// Hospital
+	_HOSPITAL_NOT_EXIST(HttpStatus.NOT_FOUND, "HOSPITAL4001", "존재하지 않는 병원입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

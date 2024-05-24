@@ -2,9 +2,9 @@ package com.shipdoc.domain.Member.entity.mapping;
 
 import java.time.LocalDateTime;
 
-import com.shipdoc.domain.Member.entity.Member;
 import com.shipdoc.domain.Member.entity.Patient;
 import com.shipdoc.domain.hospital.entity.Hospital;
+import com.shipdoc.global.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reservation")
-public class Reservation {
+public class Reservation extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -35,6 +35,12 @@ public class Reservation {
 	@Column(name = "reservation_time")
 	private LocalDateTime reservationTime;
 
+	@Column(name = "auto_reservation", nullable = false)
+	private Boolean autoReservation;
+
+	@Column(name = "absence_count", nullable = false)
+	private Integer absenceCount;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
@@ -42,8 +48,6 @@ public class Reservation {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hospital_id")
 	private Hospital hospital;
-
-
 
 	// 연관 관계 편의 메서드
 
