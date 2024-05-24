@@ -29,6 +29,7 @@ import com.shipdoc.domain.Member.web.dto.MemberRequestDto;
 import com.shipdoc.domain.Member.web.dto.MemberResponseDto;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.exception.GeneralException;
+import com.shipdoc.global.security.jwt.JwtService;
 import com.shipdoc.global.sms.SmsSentService;
 
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final SmsSentService smsSentService;
-
+	private final JwtService jwtService;
 	private final PatientRepository patientRepository;
 
 	private final PhoneCertificationRepository phoneCertificationRepository;
@@ -57,7 +58,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 		}
 
 		String encodedPassword = passwordEncoder.encode(request.getPassword());
-		Member member = MemberConverter.toMember(request, encodedPassword);
+		Member member = MemberConverter.toMember(request, encodedPassword, jwtService.createRefreshToken());
 
 		// 환자 데이터 작성 및 추가
 		Patient patient = Patient.builder()

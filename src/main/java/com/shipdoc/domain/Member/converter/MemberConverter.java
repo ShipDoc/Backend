@@ -9,10 +9,13 @@ import com.shipdoc.domain.Member.web.dto.MemberResponseDto;
 
 public class MemberConverter {
 
-	public static Member toMember(MemberRequestDto.SignupRequestDto request, String encodedPassword) {
+	public static Member toMember(MemberRequestDto.SignupRequestDto request, String encodedPassword,
+		String refreshToken) {
 		return Member.builder()
 			.loginId(request.getLoginId())
 			.password(encodedPassword)
+			.phone(request.getPhoneNumber())
+			.refreshToken(refreshToken)
 			.memberRoleList(new ArrayList<>())
 			.patientList(new ArrayList<>())
 			.favoriteHospitalList(new ArrayList<>())
