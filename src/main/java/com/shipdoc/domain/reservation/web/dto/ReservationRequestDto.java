@@ -25,7 +25,6 @@ public class ReservationRequestDto {
 
 		@PhoneNumber
 		private String phoneNumber;
-
 		@JsonProperty("isAutoReservation")
 		@NotNull(message = "예약 형식을 선택해주세요.")
 		private Boolean autoReservation;

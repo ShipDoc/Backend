@@ -13,7 +13,7 @@ public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, St
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		if (value == null || value.isBlank())
 			return true;
-		Pattern pattern = Pattern.compile("^01[016789]\\d{7}$"); // 세번째 자리는 016789만 가능
+		Pattern pattern = Pattern.compile("^01[016789]\\d{8}$"); // 세번째 자리는 016789만 가능
 
 		boolean isValid = pattern.matcher(value).matches();
 

@@ -21,7 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shipdoc.domain.Member.repository.MemberRepository;
-import com.shipdoc.domain.Member.repository.MemberRoleRepository;
 import com.shipdoc.domain.Member.service.MemberQueryService;
 import com.shipdoc.global.security.LoginService;
 import com.shipdoc.global.security.jwt.JwtService;
@@ -48,7 +47,6 @@ public class SecurityConfig {
 	private final JwtLoginSuccessHandler jwtLoginSuccessHandler;
 	private final JwtLoginFailureHandler jwtLoginFailureHandler;
 	private final MemberQueryService memberQueryService;
-	private final MemberRoleRepository memberRoleRepository;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -109,7 +107,7 @@ public class SecurityConfig {
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationProcessingFilter() {
 		JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtService,
-			memberRepository, memberQueryService, memberRoleRepository);
+			memberRepository, memberQueryService);
 		return jwtAuthenticationFilter;
 	}
 

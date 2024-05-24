@@ -15,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.shipdoc.domain.Member.entity.Member;
 import com.shipdoc.domain.Member.enums.Authority;
 import com.shipdoc.domain.Member.repository.MemberRepository;
-import com.shipdoc.domain.Member.repository.MemberRoleRepository;
 import com.shipdoc.domain.Member.service.MemberQueryService;
 import com.shipdoc.global.security.jwt.JwtService;
 
@@ -33,7 +32,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtService jwtService;
 	private final MemberRepository memberRepository;
 	private final MemberQueryService memberQueryService;
-	private final MemberRoleRepository memberRoleRepository;
 
 	/**
 	 * 로그인 요청 시 JWT 검증 X
