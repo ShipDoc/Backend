@@ -193,9 +193,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 	}
 
 	private static LocalDate toLocalDate(String birth) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(birth);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 		return LocalDate.parse(birth, formatter);
-
 	}
 
 }
