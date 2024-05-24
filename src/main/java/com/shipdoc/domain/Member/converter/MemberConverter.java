@@ -1,6 +1,5 @@
 package com.shipdoc.domain.Member.converter;
 
-
 import java.util.ArrayList;
 
 import com.shipdoc.domain.Member.entity.Member;
@@ -15,17 +14,20 @@ public class MemberConverter {
 			.loginId(request.getLoginId())
 			.password(encodedPassword)
 			.memberRoleList(new ArrayList<>())
+			.patientList(new ArrayList<>())
+			.favoriteHospitalList(new ArrayList<>())
+			.reviewList(new ArrayList<>())
 			.build();
 	}
 
-	public static MemberResponseDto.SignupResponseDto toSignupResponseDto(Member member){
+	public static MemberResponseDto.SignupResponseDto toSignupResponseDto(Member member) {
 		return MemberResponseDto.SignupResponseDto.builder()
 			.memberId(member.getId())
 			.createdAt(member.getCreatedAt())
 			.build();
 	}
 
-	public static MemberResponseDto.AddPatientResponseDto toAddPatientResponseDto(Patient patient){
+	public static MemberResponseDto.AddPatientResponseDto toAddPatientResponseDto(Patient patient) {
 		return MemberResponseDto.AddPatientResponseDto.builder()
 			.patientId(patient.getId())
 			.createdAt(patient.getCreatedAt())
