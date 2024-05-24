@@ -10,4 +10,5 @@ import com.shipdoc.domain.hospital.entity.Hospital;
 @Repository
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 	Optional<Hospital> findByKakaoId(String kakaoId);
+	Optional<Hospital> findById(Long hospitalId);
 }

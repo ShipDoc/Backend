@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.shipdoc.domain.Member.entity.mapping.MemberRole;
 import com.shipdoc.domain.Member.entity.mapping.Reservation;
+import com.shipdoc.domain.Member.entity.mapping.ReviewRecommend;
 import com.shipdoc.domain.hospital.entity.mapping.FavoriteHospital;
 import com.shipdoc.domain.hospital.entity.mapping.Review;
 import com.shipdoc.global.entity.BaseEntity;
@@ -58,6 +59,9 @@ public class Member extends BaseEntity {
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Patient> patientList;
+
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ReviewRecommend> reviewRecommendList;
 
 	// 연관 관계 편의 메서드
 	public void addMemberRole(MemberRole memberRole) {
