@@ -12,5 +12,5 @@ import com.shipdoc.domain.Member.entity.Patient;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 	Optional<Patient> findById(Long id);
 
-	Optional<Patient> findByMemberAnAndId(Member member, Long patientId);
+	Optional<Patient> findByMemberAndId(Member member, Long patientId);
 }

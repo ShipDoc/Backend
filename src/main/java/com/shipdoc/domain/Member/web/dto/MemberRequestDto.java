@@ -1,7 +1,6 @@
 package com.shipdoc.domain.Member.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.shipdoc.domain.Member.enums.FamilyRelation;
 import com.shipdoc.domain.Member.enums.NationalityType;
 import com.shipdoc.domain.Member.validation.annotation.PasswordMatch;
 import com.shipdoc.domain.Member.validation.annotation.ValidateRRN;
@@ -22,7 +21,7 @@ public class MemberRequestDto {
 	@Setter
 	@ToString
 	@PasswordMatch
-	public static class SignupRequestDto{
+	public static class SignupRequestDto {
 		@NotBlank(message = "이메일을 입력해주세요.")
 		@Email(message = "올바른 이메일 형식으로 작성해주세요.")
 		private String loginId;
@@ -31,6 +30,12 @@ public class MemberRequestDto {
 		private String passwordCheck;
 		@Pattern(regexp = "^010\\d{4}\\d{4}$", message = "올바른 전화번호를 입력해 주세요.")
 		private String phoneNumber;
+
+		@NotBlank(message = "이름을 정확하게 입력해주세요.")
+		private String name;
+
+		@Pattern(regexp = "^(19|20)\\d\\d(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])$", message = "올바른 형식으로 작성해주세요.")
+		private String birth;
 
 		@NotBlank(message = "인증번호를 입력해주세요.")
 		private String verifyCode;
@@ -47,14 +52,14 @@ public class MemberRequestDto {
 
 	@Getter
 	@Setter
-	public static class SendSmsRequestDto{
+	public static class SendSmsRequestDto {
 		@Pattern(regexp = "^010\\d{4}\\d{4}$", message = "올바른 전화번호를 입력해 주세요.")
 		private String phoneNumber;
 	}
 
 	@Getter
 	@Setter
-	public static class RRNVerificationRequestDto{
+	public static class RRNVerificationRequestDto {
 		@JsonProperty("RRN")
 		@ValidateRRN
 		private String RRN;
@@ -62,7 +67,7 @@ public class MemberRequestDto {
 
 	@Getter
 	@Setter
-	public static class AddPatientRequestDto{
+	public static class AddPatientRequestDto {
 		@JsonProperty("RRN")
 		@ValidateRRN
 		private String RRN;
@@ -72,7 +77,6 @@ public class MemberRequestDto {
 		@NotBlank(message = "이름을 입력해주세요.")
 		private String name;
 
-		
 		// 자녀 형식으로만 추가
 		// private FamilyRelation familyRelation;
 	}
