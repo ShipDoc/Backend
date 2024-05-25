@@ -6,4 +6,5 @@ import com.shipdoc.domain.hospital.web.dto.ReviewRequestDto;
 
 public interface ReviewCommandService {
 	Review createReview(ReviewRequestDto.createReviewRequestDto request, Member member, Long hospitalId);
+	void addReviewRecommand(Long reviewId, Member member);
 }

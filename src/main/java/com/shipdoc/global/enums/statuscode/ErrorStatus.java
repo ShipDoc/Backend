@@ -20,6 +20,10 @@ public enum ErrorStatus implements BaseCode {
 	_PATIENT_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4006", "존재하지 않는 회원입니다."),
 	_PATIENT_DELETE_FORBIDDEN(HttpStatus.FORBIDDEN, "MEMBER4007", "삭제 권한이 없습니다."),
 
+	// review
+	_REVIEW_NOT_EXIST(HttpStatus.NOT_FOUND, "REVIEW4001", "존재하지 않는 리뷰입니다."),
+	_EXIST_REVIEW_RECOMMEND(HttpStatus.BAD_REQUEST, "REVIEW4002", "이미 추천한 리뷰입니다."),
+
 	// Hospital
 	_HOSPITAL_NOT_EXIST(HttpStatus.NOT_FOUND, "HOSPITAL4001", "존재하지 않는 병원입니다.");
 

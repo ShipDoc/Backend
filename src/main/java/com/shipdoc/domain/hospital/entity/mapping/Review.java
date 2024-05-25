@@ -64,4 +64,9 @@ public class Review extends BaseEntity {
 	public void changeHospital(Hospital hospital) {
 		this.hospital = hospital;
 	}
+
+	public void addReviewRecommand(ReviewRecommend reviewRecommend){
+		reviewRecommendList.add(reviewRecommend);
+		reviewRecommend.changeReview(this);
+	}
 }

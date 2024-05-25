@@ -90,4 +90,10 @@ public class Member extends BaseEntity {
 		patient.changeMember(this);
 	}
 
+	public void addReviewRecommand(ReviewRecommend reviewRecommend){
+		reviewRecommendList.add(reviewRecommend);
+		reviewRecommend.changeMember(this);
+
+	}
+
 }
