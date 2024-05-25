@@ -13,8 +13,8 @@ import com.shipdoc.domain.hospital.entity.mapping.Review;
 import com.shipdoc.domain.hospital.exception.HospitalNotExistException;
 import com.shipdoc.domain.hospital.exception.ReviewNotExistException;
 import com.shipdoc.domain.hospital.repository.HospitalRepository;
-import com.shipdoc.domain.hospital.repository.ReivewRepository;
 import com.shipdoc.domain.hospital.repository.ReviewRecommendRepository;
+import com.shipdoc.domain.hospital.repository.ReviewRepository;
 import com.shipdoc.domain.hospital.web.dto.ReviewRequestDto;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.exception.GeneralException;
@@ -24,45 +24,44 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ReviewCommandServiceImpl implements ReviewCommandService{
-	private final ReivewRepository reivewRepository;
+public class ReviewCommandServiceImpl implements ReviewCommandService {
+	private final ReviewRepository reviewRepository;
 	private final HospitalRepository hospitalRepository;
 	private final ReviewRecommendRepository reviewRecommendRepository;
 
 	@Override
-	public Review createReview(ReviewRequestDto.createReviewRequestDto request, Member member, Long hospitalId){
+	public Review createReview(ReviewRequestDto.createReviewRequestDto request, Member member, Long hospitalId) {
 		Review review = ReviewConverter.toReview(request);
 		Hospital hospital = hospitalRepository.findById(hospitalId).orElseThrow(() -> new HospitalNotExistException());
 		member.addReview(review);
 		hospital.addReview(review);
-		return reivewRepository.save(review);
+		return reviewRepository.save(review);
 	}
 
 	@Override
-	public void addReviewRecommand(Long reviewId, Member member){
-		Review review = reivewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
+	public void addReviewRecommand(Long reviewId, Member member) {
+		Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
 
-		if(reviewRecommendRepository.existsByMemberIdAndReviewId(member.getId(), reviewId)){
+		if (reviewRecommendRepository.existsByMemberIdAndReviewId(member.getId(), reviewId)) {
 			throw new GeneralException(ErrorStatus._EXIST_REVIEW_RECOMMEND);
 		}
 		ReviewRecommend reviewRecommend = ReviewRecommend.builder().build();
 
 		review.addReviewRecommand(reviewRecommend);
-		member.addReviewRecommand(reviewRecommend);
+		member.addReviewRecommend(reviewRecommend);
 		reviewRecommendRepository.save(reviewRecommend);
 	}
 
 	@Override
-	public void deleteReviewRecommend (Long reviewId, Member member){
-		Review review = reivewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
+	public void deleteReviewRecommend(Long reviewId, Member member) {
+		Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
 
 		Optional<ReviewRecommend> reviewRecommendOptional = reviewRecommendRepository.findByMemberIdAndReviewId(
 			member.getId(), reviewId);
 
-		if(!reviewRecommendOptional.isPresent()){
+		if (!reviewRecommendOptional.isPresent()) {
 			throw new GeneralException(ErrorStatus._REVIEW_RECOMMEND_NOT_EXIST);
-		}
-		else{
+		} else {
 			reviewRecommendRepository.delete(reviewRecommendOptional.get());
 		}
 	}

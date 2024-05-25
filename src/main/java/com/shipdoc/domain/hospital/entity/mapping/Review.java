@@ -35,9 +35,6 @@ public class Review extends BaseEntity {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "recommendation_count")
-	private Long recommendationCount;
-
 	@Column(name = "content")
 	private String content;
 
@@ -65,7 +62,7 @@ public class Review extends BaseEntity {
 		this.hospital = hospital;
 	}
 
-	public void addReviewRecommand(ReviewRecommend reviewRecommend){
+	public void addReviewRecommand(ReviewRecommend reviewRecommend) {
 		reviewRecommendList.add(reviewRecommend);
 		reviewRecommend.changeReview(this);
 	}

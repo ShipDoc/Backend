@@ -3,7 +3,6 @@ package com.shipdoc.domain.Member.entity;
 import java.util.List;
 
 import com.shipdoc.domain.Member.entity.mapping.MemberRole;
-import com.shipdoc.domain.Member.entity.mapping.Reservation;
 import com.shipdoc.domain.Member.entity.mapping.ReviewRecommend;
 import com.shipdoc.domain.hospital.entity.mapping.FavoriteHospital;
 import com.shipdoc.domain.hospital.entity.mapping.Review;
@@ -52,7 +51,7 @@ public class Member extends BaseEntity {
 	private List<MemberRole> memberRoleList;
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	private	List<FavoriteHospital> favoriteHospitalList;
+	private List<FavoriteHospital> favoriteHospitalList;
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Review> reviewList;
@@ -85,12 +84,12 @@ public class Member extends BaseEntity {
 		review.changeMember(this);
 	}
 
-	public void addPatient(Patient patient){
+	public void addPatient(Patient patient) {
 		patientList.add(patient);
 		patient.changeMember(this);
 	}
 
-	public void addReviewRecommand(ReviewRecommend reviewRecommend){
+	public void addReviewRecommend(ReviewRecommend reviewRecommend) {
 		reviewRecommendList.add(reviewRecommend);
 		reviewRecommend.changeMember(this);
 

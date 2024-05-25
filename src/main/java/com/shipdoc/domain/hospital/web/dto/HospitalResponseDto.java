@@ -1,5 +1,7 @@
 package com.shipdoc.domain.hospital.web.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,4 +49,21 @@ public class HospitalResponseDto {
 		public String holiday;
 		public String breakTime;
 	}
+
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class HospitalReviewPageResponseDto {
+		private Long hospitalId;
+		private String hospitalName;
+		private List<ReviewResponseDto.ReviewDetailResponseDto> reviewList;
+		String totalRate;
+		Integer size;
+		Integer totalPage;
+		Long totalElements;
+		Boolean isFirst;
+		Boolean isLast;
+	}
+
 }

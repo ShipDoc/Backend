@@ -13,9 +13,22 @@ public class ReviewResponseDto {
 	@Getter
 	@NoArgsConstructor
 	@AllArgsConstructor
-	public static class CreateReviewResponseDto{
+	public static class CreateReviewResponseDto {
 		private Long reviewId;
 		private LocalDateTime createdAt;
 
+	}
+
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class ReviewDetailResponseDto {
+		private String createdAt;
+		private String name;
+		private Double score;
+		private String content;
+		private Boolean recommended;
+		private Integer recommendCount;
 	}
 }
