@@ -1,5 +1,10 @@
 package com.shipdoc.domain.hospital.entity;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -61,5 +66,56 @@ public class BusinessHours {
 
 	public void changeHospital(Hospital hospital) {
 		this.hospital = hospital;
+	}
+
+	// 영업시간 문자열을 파싱하여 LocalTime 객체로 변환하는 메서드
+	private LocalTime[] parseTimeRange(String timeRange) {
+		String[] times = timeRange.split(" ~ ");
+		return new LocalTime[] {
+			LocalTime.parse(times[0], DateTimeFormatter.ofPattern("HH:mm")),
+			LocalTime.parse(times[1], DateTimeFormatter.ofPattern("HH:mm"))
+		};
+	}
+
+	// 현재 시각에 대해 영업중인지 확인하는 메서드
+	public boolean isOpenNow() {
+		LocalDateTime now = LocalDateTime.now();
+		DayOfWeek dayOfWeek = now.getDayOfWeek();
+		LocalTime currentTime = now.toLocalTime();
+		String hours = "";
+
+		switch (dayOfWeek) {
+			case MONDAY:
+				hours = monday;
+				break;
+			case TUESDAY:
+				hours = tuesday;
+				break;
+			case WEDNESDAY:
+				hours = wednesday;
+				break;
+			case THURSDAY:
+				hours = thursday;
+				break;
+			case FRIDAY:
+				hours = friday;
+				break;
+			case SATURDAY:
+				hours = saturday;
+				break;
+			case SUNDAY:
+				hours = sunday;
+				break;
+		}
+
+		if (hours.equals("휴무")) {
+			return false;
+		}
+
+		LocalTime[] timeRange = parseTimeRange(hours);
+		LocalTime start = timeRange[0];
+		LocalTime end = timeRange[1];
+
+		return !currentTime.isBefore(start) && !currentTime.isAfter(end);
 	}
 }
