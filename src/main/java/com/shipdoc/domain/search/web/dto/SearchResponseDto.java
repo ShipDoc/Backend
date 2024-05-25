@@ -16,7 +16,7 @@ public class SearchResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class SearchQueryResponseDto {
-		private List<HospitalResponseDto.HospitalPreviewResponseDto> placeDetailList;
+		private List<HospitalResponseDto.HospitalPreviewResponseDto> hospitalList;
 		private Long size;
 	}
 

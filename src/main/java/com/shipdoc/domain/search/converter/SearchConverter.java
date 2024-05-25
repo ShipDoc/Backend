@@ -9,7 +9,7 @@ public class SearchConverter {
 	public static SearchResponseDto.SearchQueryResponseDto toSearchQueryResponseDto(
 		List<HospitalResponseDto.HospitalPreviewResponseDto> placePreviewList) {
 		return SearchResponseDto.SearchQueryResponseDto.builder()
-			.placeDetailList(placePreviewList)
+			.hospitalList(placePreviewList)
 			.size((long)placePreviewList.size())
 			.build();
 	}
