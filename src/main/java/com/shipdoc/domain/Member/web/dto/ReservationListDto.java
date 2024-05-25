@@ -16,7 +16,9 @@ public class ReservationListDto {
         private Long id; //예약 ID
         private Timestamp reservationDate; //예약 날짜
         private Long hospitalId; //병원명
-        private Long memberId; // 회원 ID
+        private Long patientId; //환자 고유 번호
+        private Boolean autoReservation; //자동 예약 여부
+        private Long absenceCount; // 노쇼 횟수
     }
 
     // 예약 내역 조회

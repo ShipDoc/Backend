@@ -1,52 +1,55 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.5'
-	id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.shipdoc'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 // build 이름 변경, plane 파일 생성 X
 jar {
-	archiveBaseName = 'fairytale'
-	version = '0.0.1-SNAPSHOT'
-	enabled = false
+    archiveBaseName = 'fairytale'
+    version = '0.0.1-SNAPSHOT'
+    enabled = false
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	// 유효성 검증
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // 유효성 검증
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	// JWT token
-	implementation 'io.jsonwebtoken:jjwt:0.12.3'
+    // JWT token
+    implementation 'io.jsonwebtoken:jjwt:0.12.3'
 
-	// Spring Security OAUTH 2.1
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Spring Security OAUTH 2.1
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // SMS coolsms API
+    implementation 'net.nurigo:sdk:4.3.0'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

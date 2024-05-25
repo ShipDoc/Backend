@@ -6,6 +6,7 @@ import com.shipdoc.domain.Member.web.dto.ReservationListDto;
 import com.shipdoc.global.response.ApiResponse;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,12 +28,15 @@ public class ReservationServiceImpl implements ReservationService {
         if(reservations.isEmpty()) {
             return ApiResponse.onFailure("NO_RESERVATIONS", "예약 내역이 없습니다.", null);
         }
+
         for(Reservation reservation: reservations) {
             reservationResponses.add(ReservationListDto.ReservationResponse.builder()
                     .id(reservation.getId())
                     .reservationDate(reservation.getReservationDate())
                     .hospitalId(reservation.getHospitalId())
-                    .memberId(reservation.getMemberId())
+                    .patientId(reservation.getPatientId())
+                    .autoReservation(reservation.getAutoReservation())
+                    .absenceCount(reservation.getAbsenceCount())
                     .build());
         }
 

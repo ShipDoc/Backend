@@ -25,5 +25,26 @@ public class MemberRequestDto {
 		@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\S]{8,20}$", message = "영문, 숫자를 포함한 8~20자리 이내로 입력해주세요.")
 		private String password;
 		private String passwordCheck;
+		@Pattern(regexp = "^010\\d{4}\\d{4}$", message = "올바른 전화번호를 입력해 주세요.")
+		private String phoneNumber;
+
+		@NotBlank(message = "인증번호를 입력해주세요.")
+		private String verifyCode;
+	}
+
+	@Getter
+	@Setter
+	public static class VerifySmsCodeRequestDto {
+		@Pattern(regexp = "^010\\d{4}\\d{4}$", message = "올바른 전화번호를 입력해 주세요.")
+		private String phoneNumber;
+		@NotBlank(message = "인증번호를 입력해주세요.")
+		private String verifyCode;
+	}
+
+	@Getter
+	@Setter
+	public static class SendSmsRequestDto{
+		@Pattern(regexp = "^010\\d{4}\\d{4}$", message = "올바른 전화번호를 입력해 주세요.")
+		private String phoneNumber;
 	}
 }
