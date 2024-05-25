@@ -15,23 +15,35 @@ public class HospitalResponseDto {
 	@AllArgsConstructor
 	public static class HospitalDetailResponseDto {
 		private Long hospitalId;
-		private String distance;
 		private String KakaoPlaceId;
-
 		private String phone;
-
 		private String placeName;
-
 		private String placeUrl;
-
 		private String address;
-
-		private Double longitude;
-
 		private Double latitude;
-
+		private Double longitude;
+		private String department;
+		private Boolean isOpenNow;
+		private Integer waitingCount;
+		private List<ReviewResponseDto.ReviewDetailResponseDto> reviewList;
+		// TODO 즐겨찾기 한 병원인지 구분
 		private BusinessHoursResponseDto businessHours;
 
+	}
+
+	@Getter
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class HospitalPreviewResponseDto {
+		private String hospitalName;
+		private String address;
+		private String distance;
+		private Double totalRate;
+		private String imageUrl;
+		private Double latitude;
+		private Double longitude;
+		private Integer reviewCount;
 	}
 
 	@Getter

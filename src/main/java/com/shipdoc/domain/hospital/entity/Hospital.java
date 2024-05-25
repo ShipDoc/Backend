@@ -56,6 +56,9 @@ public class Hospital {
 	@Column(name = "kakao_url")
 	private String kakaoUrl;
 
+	@Column(name = "department")
+	private String department;
+
 	@OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<FavoriteHospital> favoriteHospitalList;
 
