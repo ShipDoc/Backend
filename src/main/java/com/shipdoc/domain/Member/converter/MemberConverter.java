@@ -20,6 +20,7 @@ public class MemberConverter {
 			.patientList(new ArrayList<>())
 			.favoriteHospitalList(new ArrayList<>())
 			.reviewList(new ArrayList<>())
+			.reviewRecommendList(new ArrayList<>())
 			.build();
 	}
 
