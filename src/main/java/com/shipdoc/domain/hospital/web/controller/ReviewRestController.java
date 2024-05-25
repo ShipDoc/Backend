@@ -1,5 +1,6 @@
 package com.shipdoc.domain.hospital.web.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +24,11 @@ public class ReviewRestController {
 	public ApiResponse<String> recommendReview(@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member){
 		reviewCommandService.addReviewRecommand(reviewId, member);
 		return ApiResponse.onSuccess("리뷰 추천에 성공했습니다.");
+	}
+
+	@DeleteMapping("/{reviewId}/recommend")
+	public ApiResponse<String> deleteReviewRecommend(@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member){
+		reviewCommandService.deleteReviewRecommend(reviewId, member);
+		return ApiResponse.onSuccess("리뷰 추천 해제를 성공했습니다.");
 	}
 }

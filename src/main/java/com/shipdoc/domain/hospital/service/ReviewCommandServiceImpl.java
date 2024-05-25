@@ -1,5 +1,7 @@
 package com.shipdoc.domain.hospital.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +50,20 @@ public class ReviewCommandServiceImpl implements ReviewCommandService{
 		review.addReviewRecommand(reviewRecommend);
 		member.addReviewRecommand(reviewRecommend);
 		reviewRecommendRepository.save(reviewRecommend);
+	}
+
+	@Override
+	public void deleteReviewRecommend (Long reviewId, Member member){
+		Review review = reivewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
+
+		Optional<ReviewRecommend> reviewRecommendOptional = reviewRecommendRepository.findByMemberIdAndReviewId(
+			member.getId(), reviewId);
+
+		if(!reviewRecommendOptional.isPresent()){
+			throw new GeneralException(ErrorStatus._REVIEW_RECOMMEND_NOT_EXIST);
+		}
+		else{
+			reviewRecommendRepository.delete(reviewRecommendOptional.get());
+		}
 	}
 }
