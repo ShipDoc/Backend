@@ -32,7 +32,7 @@ public class ReservationServiceImpl implements ReservationService {
         for(Reservation reservation: reservations) {
             reservationResponses.add(ReservationListDto.ReservationResponse.builder()
                     .id(reservation.getId())
-                    .reservationDate(reservation.getReservationDate())
+                    .reservationTime(reservation.getReservationTime())
                     .hospitalId(reservation.getHospitalId())
                     .patientId(reservation.getPatientId())
                     .autoReservation(reservation.getAutoReservation())

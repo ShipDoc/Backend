@@ -14,7 +14,7 @@ public class ReservationListDto {
     @AllArgsConstructor
     public static class ReservationResponse {
         private Long id; //예약 ID
-        private Timestamp reservationDate; //예약 날짜
+        private Timestamp reservationTime; //예약 날짜
         private Long hospitalId; //병원명
         private Long patientId; //환자 고유 번호
         private Boolean autoReservation; //자동 예약 여부

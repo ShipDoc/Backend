@@ -21,8 +21,8 @@ public class Reservation extends BaseEntity {
     @Column(name = "id")
     private Long id; //예약 고유 번호
 
-    @Column(name = "reservation_date", nullable = false)
-    private Timestamp reservationDate; //예약 날짜(날짜, 시간)
+    @Column(name = "reservation_time", nullable = false)
+    private Timestamp reservationTime; //예약 날짜(날짜, 시간)
 
     @ManyToOne
     @JoinColumn(name = "hospital_id", nullable = false)
