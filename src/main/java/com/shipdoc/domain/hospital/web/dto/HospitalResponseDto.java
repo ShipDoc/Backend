@@ -19,6 +19,7 @@ public class HospitalResponseDto {
 		private String phone;
 		private String placeName;
 		private String placeUrl;
+		private String imageUrl;
 		private String address;
 		private Double latitude;
 		private Double longitude;

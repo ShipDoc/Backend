@@ -27,6 +27,7 @@ public class HospitalConverter {
 			.longitude(hospital.getLongitude())
 			.department(hospital.getDepartment())
 			.isOpenNow(openNow)
+			.imageUrl(hospital.getPhotoUrl())
 			//TODO 실제 예약 대기자 인원으로 변경
 			.waitingCount(generateRandomWaitingCount(openNow))
 			.reviewList(reviewList)
