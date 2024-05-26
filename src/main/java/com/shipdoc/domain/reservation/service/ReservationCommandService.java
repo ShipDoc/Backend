@@ -6,4 +6,5 @@ import com.shipdoc.domain.reservation.web.dto.ReservationRequestDto;
 
 public interface ReservationCommandService {
 	Reservation createReservation(ReservationRequestDto.CreateReservationRequestDto request, Member member);
+	void cancelReservation(Member member, Long reservationId);
 }
