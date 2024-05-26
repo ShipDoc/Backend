@@ -17,8 +17,4 @@ public class Hospital {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
-
-    public Long getHospitalId() {
-        return id;
-    }
 }

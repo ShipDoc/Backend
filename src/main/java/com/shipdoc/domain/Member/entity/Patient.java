@@ -17,8 +17,4 @@ public class Patient {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
-
-    public Long getPatientId() {
-        return id;
-    }
 }

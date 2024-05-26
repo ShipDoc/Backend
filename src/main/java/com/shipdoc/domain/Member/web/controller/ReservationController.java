@@ -17,7 +17,7 @@ public class ReservationController {
     @GetMapping("/check-all")
     public ApiResponse<?> getAllReservation() {
         ApiResponse<?> result = reservationService.getAllReservation();
-        return ApiResponse.onSuccess(result);
+        return result;
     }
 
 }
