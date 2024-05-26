@@ -17,6 +17,7 @@ import com.shipdoc.domain.Member.entity.Patient;
 import com.shipdoc.domain.Member.entity.mapping.Reservation;
 import com.shipdoc.domain.Member.enums.FamilyRelation;
 import com.shipdoc.domain.Member.exception.PatientNotExistException;
+import com.shipdoc.domain.Member.repository.PatientRepository;
 import com.shipdoc.domain.hospital.entity.Hospital;
 import com.shipdoc.domain.hospital.exception.HospitalNotExistException;
 import com.shipdoc.domain.hospital.repository.HospitalRepository;
@@ -67,25 +68,28 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 		hospital.addReservation(reservation);
 
 		// 예약 문자 발송
- 		addScheduledMessage(reservation, hospital, reservation.getPatient().getName());
+ 		addScheduledMessage(reservation, hospital.getName(), reservation.getPatient().getName());
 
 
 		// 예약 시간 1시간 이후 왔는지 체크 => 만약 아직 예약 기록이 있다면(도착하지 못했다면) 자동으로 다음 예약
 		if(reservation.getAutoReservation()) {
 			schedulerService.scheduleTask(UUID.randomUUID().toString(),
-				() -> checkReservation(reservation.getId(), hospital),
-				convertLocalDateTimeToDate(reservation.getReservationTime().plusMinutes(10)));
+				() -> checkReservation(reservation.getId(), hospital.getName()),
+				convertLocalDateTimeToDate(reservation.getReservationTime()));
 		}
 
 		return reservationRepository.save(reservation);
 	}
 
-	public void checkReservation(Long reservationId, Hospital hospital){
+
+	public void checkReservation(Long reservationId, String hospitalName){
 		Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
 		// 만약 노쇼한 경우
 		if(optionalReservation.isPresent()){
 			Reservation reservation = optionalReservation.get();
 			reservation.changeAbsenceCount();
+
+			Patient patient = reservation.getPatient();
 
 			// 만약 노쇼 횟수가 3번이면 날짜 변경 X
 			if(reservation.getAbsenceCount() == 3){
@@ -93,18 +97,19 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 				return;
 			}
 
-			smsSentService.sendMessage(reservation.getPhoneNumber(), generateMissingMessageText(hospital, reservation.getPatient().getName(), reservation.getReservationTime()));
+			smsSentService.sendMessage(reservation.getPhoneNumber(), generateMissingMessageText(hospitalName, patient.getName(), reservation.getReservationTime()));
 			// TODO 예약 날짜 변경 (현재 60분 뒤로)
 			reservation.changeAbsenceCount();
 			reservation.changeReservationTime(reservation.getReservationTime().plusHours(1));
-			addScheduledMessage(reservation, hospital, reservation.getPatient().getName());
+			addScheduledMessage(reservation, hospitalName, patient.getName());
+			reservationRepository.save(reservation);
 		}
 	}
 
-	private void addScheduledMessage(Reservation reservation, Hospital hospital, String patientName){
+	private void addScheduledMessage(Reservation reservation, String hospitalName, String patientName){
 		if(reservation.getPhoneNumber() != null) {
 			String smsId = smsSentService.sendScheduledMessage(reservation.getPhoneNumber(),
-				generateRemindMessageText(hospital, patientName, reservation.getReservationTime()),
+				generateRemindMessageText(hospitalName, patientName, reservation.getReservationTime()),
 				reservation.getReservationTime().minusMinutes(30));
 			reservation.changeSmsId(smsId);
 		}
@@ -130,13 +135,13 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 
 	}
 
-	private String generateRemindMessageText(Hospital hospital, String patientName, LocalDateTime reservationTime){
+	private String generateRemindMessageText(String hospitalName, String patientName, LocalDateTime reservationTime){
 			return "[쉽닥] 병원 예약 리마인드\n\n"
 			+ "안녕하세요, " + patientName + "님!\n"
 			+ "\n"
 			+ "곧 있을 병원 예약을 잊지 않으셨죠? \n"
 			+ "\n"
-			+ hospital.getName() +"에서의 진료 예약이 30분 후에 시작됩니다.\n"
+			+ hospitalName +"에서의 진료 예약이 30분 후에 시작됩니다.\n"
 			+ "[예약 시간: " + convertToTimeText(reservationTime) + "]\n"
 			+ "\n"
 			+ "방문 시 필요한 서류와 신분증을 꼭 지참해 주세요. 늦지 않게 도착해 주시기 바랍니다.\n"
@@ -146,12 +151,12 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 			+ "쉽닥 드림";
 	}
 
-	private String generateMissingMessageText(Hospital hospital, String patientName, LocalDateTime reservationTime){
+	private String generateMissingMessageText(String hospitalName, String patientName, LocalDateTime reservationTime){
 			return "[쉽닥] 병원 예약 안내\n"
 			+ "\n"
 			+ "안녕하세요, " + patientName + "님!\n"
 			+ "\n"
-			+ "오늘 " + hospital.getName() + "에서의 예약 시간 [예약 시간: " + convertToTimeText(reservationTime) + "]에 오지 못하셨습니다. \n"
+			+ "오늘 " + hospitalName + "에서의 예약 시간 [예약 시간: " + convertToTimeText(reservationTime) + "]에 오지 못하셨습니다. \n"
 			+ "\n"
 			+ "다음 가능한 시간으로 자동 재예약을 해드렸습니다.\n"
 			+ "\n"

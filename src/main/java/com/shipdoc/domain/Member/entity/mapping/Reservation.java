@@ -47,7 +47,7 @@ public class Reservation extends BaseEntity {
 	@Column(name = "sms_id")
 	private String smsId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
 
