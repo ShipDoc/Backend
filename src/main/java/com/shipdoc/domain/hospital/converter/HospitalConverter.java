@@ -38,6 +38,7 @@ public class HospitalConverter {
 	public static HospitalResponseDto.HospitalPreviewResponseDto toHospitalPreviewResponseDto(Hospital hospital,
 		String distance, Double totalRate, Integer reviewCount) {
 		return HospitalResponseDto.HospitalPreviewResponseDto.builder()
+			.hospitalId(hospital.getId())
 			.hospitalName(hospital.getName())
 			.address(hospital.getAddress())
 			.imageUrl(hospital.getPhotoUrl())

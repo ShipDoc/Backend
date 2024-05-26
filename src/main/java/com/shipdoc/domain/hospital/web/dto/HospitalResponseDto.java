@@ -37,6 +37,7 @@ public class HospitalResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class HospitalPreviewResponseDto {
+		private Long hospitalId;
 		private String hospitalName;
 		private String address;
 		private String distance;
