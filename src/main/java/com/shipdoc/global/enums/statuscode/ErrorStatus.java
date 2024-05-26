@@ -25,6 +25,11 @@ public enum ErrorStatus implements BaseCode {
 	_EXIST_REVIEW_RECOMMEND(HttpStatus.BAD_REQUEST, "REVIEW4002", "이미 추천한 리뷰입니다."),
 	_REVIEW_RECOMMEND_NOT_EXIST(HttpStatus.NOT_FOUND, "REVIEW4003", "추천하지 않은 리뷰입니다."),
 
+	// reservation
+
+	_RESERVATION_NOT_EXSIT(HttpStatus.NOT_FOUND, "RESERVATION4001", "존재하지 않는 예약입니다."),
+
+
 	// Hospital
 	_HOSPITAL_NOT_EXIST(HttpStatus.NOT_FOUND, "HOSPITAL4001", "존재하지 않는 병원입니다."),
 	_INVALID_HOSPITAL_SORT_STATUS(HttpStatus.BAD_REQUEST, "HOSPITAL4002", "올바르지 않은 병원 데이터 정렬 기준입니다.");

@@ -19,6 +19,7 @@ public class SchedulerService {
 	private final Map<String, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
 
 	public void scheduleTask(String taskId, Runnable task, Date scheduledTime) {
+		log.info("Date = {}", scheduledTime);
 		ScheduledFuture<?> scheduledFuture = taskScheduler.schedule(task, scheduledTime);
 		scheduledTasks.put(taskId, scheduledFuture);
 	}

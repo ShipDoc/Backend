@@ -16,8 +16,11 @@ import com.shipdoc.domain.hospital.entity.Hospital;
 import com.shipdoc.domain.hospital.exception.HospitalNotExistException;
 import com.shipdoc.domain.hospital.repository.HospitalRepository;
 import com.shipdoc.domain.reservation.converter.ReservationConverter;
+import com.shipdoc.domain.reservation.exception.ReservationNotExistException;
 import com.shipdoc.domain.reservation.repository.ReservationRepository;
 import com.shipdoc.domain.reservation.web.dto.ReservationRequestDto;
+import com.shipdoc.global.enums.statuscode.ErrorStatus;
+import com.shipdoc.global.exception.GeneralException;
 import com.shipdoc.global.sms.SmsSentService;
 
 import lombok.RequiredArgsConstructor;
@@ -60,11 +63,31 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 		if(reservation.getPhoneNumber() != null) {
 			String smsId = smsSentService.sendScheduledMessage(reservation.getPhoneNumber(),
 				generateRemindMessageText(hospital, patient.getName(), reservation.getReservationTime()),
-				reservation.getReservationTime());
+				reservation.getReservationTime().minusMinutes(30));
 			reservation.changeSmsId(smsId);
 		}
 
 		return reservationRepository.save(reservation);
+	}
+
+	@Override
+	public void cancelReservation(Member member, Long reservationId){
+		Reservation reservation = reservationRepository.findById(reservationId)
+			.orElseThrow(() -> new ReservationNotExistException());
+
+		if(reservation.getPatient().getMember() != member){
+			log.error("예약에 대한 접근 권한이 없습니다. 예약 번호 = {}, 사용자 번호 = {}", reservationId, member.getId());
+			throw new GeneralException(ErrorStatus._FORBIDDEN);
+		}
+
+
+		if(reservation.getSmsId() != null) {
+			// 만약 메세지 전송 예약이 있다면 취소
+			smsSentService.cancelScheduledMessage(reservation.getSmsId());
+		}
+
+		reservationRepository.delete(reservation);
+
 	}
 
 	private String generateRemindMessageText(Hospital hospital, String patientName, LocalDateTime reservationTime){
