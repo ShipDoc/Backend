@@ -93,7 +93,11 @@ public class HospitalCommandServiceImpl implements HospitalCommandService {
 
 			hospital.changeBusinessHours(businessHours);
 
-			hospitalRepository.save(hospital);
+			Optional<Hospital> hospitalOptional1 = hospitalRepository.findByKakaoId(placeDetail.getKakaoPlaceId());
+			if (!hospitalOptional1.isPresent()) {
+				hospital = hospitalRepository.save(hospital);
+			} else
+				hospital = hospitalOptional1.get();
 		}
 
 		Double totalRate = hospitalRepository.findAverageScoreByHospitalId(hospital.getId());
