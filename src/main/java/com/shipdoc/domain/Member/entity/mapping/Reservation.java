@@ -69,4 +69,12 @@ public class Reservation extends BaseEntity {
 		this.smsId = smsId;
 	}
 
+	public void changeAbsenceCount(){
+		this.absenceCount ++;
+	}
+
+	public void changeReservationTime(LocalDateTime reservationTime){
+		this.reservationTime = reservationTime;
+	}
+
 }

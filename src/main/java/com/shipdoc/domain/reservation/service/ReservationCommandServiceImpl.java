@@ -1,7 +1,13 @@
 package com.shipdoc.domain.reservation.service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +17,6 @@ import com.shipdoc.domain.Member.entity.Patient;
 import com.shipdoc.domain.Member.entity.mapping.Reservation;
 import com.shipdoc.domain.Member.enums.FamilyRelation;
 import com.shipdoc.domain.Member.exception.PatientNotExistException;
-import com.shipdoc.domain.Member.repository.PatientRepository;
 import com.shipdoc.domain.hospital.entity.Hospital;
 import com.shipdoc.domain.hospital.exception.HospitalNotExistException;
 import com.shipdoc.domain.hospital.repository.HospitalRepository;
@@ -21,6 +26,7 @@ import com.shipdoc.domain.reservation.repository.ReservationRepository;
 import com.shipdoc.domain.reservation.web.dto.ReservationRequestDto;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.exception.GeneralException;
+import com.shipdoc.global.service.SchedulerService;
 import com.shipdoc.global.sms.SmsSentService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +42,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 	private final HospitalRepository hospitalRepository;
 
 	private final SmsSentService smsSentService;
+	private final SchedulerService schedulerService;
 
 	@Override
 	public Reservation createReservation(ReservationRequestDto.CreateReservationRequestDto request, Member member) {
@@ -60,14 +67,47 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 		hospital.addReservation(reservation);
 
 		// 예약 문자 발송
-		if(reservation.getPhoneNumber() != null) {
-			String smsId = smsSentService.sendScheduledMessage(reservation.getPhoneNumber(),
-				generateRemindMessageText(hospital, patient.getName(), reservation.getReservationTime()),
-				reservation.getReservationTime().minusMinutes(30));
-			reservation.changeSmsId(smsId);
+ 		addScheduledMessage(reservation, hospital, reservation.getPatient().getName());
+
+
+		// 예약 시간 1시간 이후 왔는지 체크 => 만약 아직 예약 기록이 있다면(도착하지 못했다면) 자동으로 다음 예약
+		if(reservation.getAutoReservation()) {
+			schedulerService.scheduleTask(UUID.randomUUID().toString(),
+				() -> checkReservation(reservation.getId(), hospital),
+				convertLocalDateTimeToDate(reservation.getReservationTime().plusMinutes(10)));
 		}
 
 		return reservationRepository.save(reservation);
+	}
+
+	public void checkReservation(Long reservationId, Hospital hospital){
+		Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
+		// 만약 노쇼한 경우
+		if(optionalReservation.isPresent()){
+			Reservation reservation = optionalReservation.get();
+			reservation.changeAbsenceCount();
+
+			// 만약 노쇼 횟수가 3번이면 날짜 변경 X
+			if(reservation.getAbsenceCount() == 3){
+				reservationRepository.delete(reservation);
+				return;
+			}
+
+			smsSentService.sendMessage(reservation.getPhoneNumber(), generateMissingMessageText(hospital, reservation.getPatient().getName(), reservation.getReservationTime()));
+			// TODO 예약 날짜 변경 (현재 60분 뒤로)
+			reservation.changeAbsenceCount();
+			reservation.changeReservationTime(reservation.getReservationTime().plusHours(1));
+			addScheduledMessage(reservation, hospital, reservation.getPatient().getName());
+		}
+	}
+
+	private void addScheduledMessage(Reservation reservation, Hospital hospital, String patientName){
+		if(reservation.getPhoneNumber() != null) {
+			String smsId = smsSentService.sendScheduledMessage(reservation.getPhoneNumber(),
+				generateRemindMessageText(hospital, patientName, reservation.getReservationTime()),
+				reservation.getReservationTime().minusMinutes(30));
+			reservation.changeSmsId(smsId);
+		}
 	}
 
 	@Override
@@ -97,18 +137,41 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 			+ "곧 있을 병원 예약을 잊지 않으셨죠? \n"
 			+ "\n"
 			+ hospital.getName() +"에서의 진료 예약이 30분 후에 시작됩니다.\n"
-			+ "[예약 시간: " + ConvertToTimeText(reservationTime) + "]\n"
+			+ "[예약 시간: " + convertToTimeText(reservationTime) + "]\n"
 			+ "\n"
 			+ "방문 시 필요한 서류와 신분증을 꼭 지참해 주세요. 늦지 않게 도착해 주시기 바랍니다.\n"
 			+ "\n"
 			+ "쉽닥과 함께 건강한 하루 되세요!\n"
 			+ "\n"
-			+ "쉽닥 드림\uD83D\uDC0F\n"
-			+ "\n";
+			+ "쉽닥 드림";
 	}
 
-	private String ConvertToTimeText(LocalDateTime reservationTime){
+	private String generateMissingMessageText(Hospital hospital, String patientName, LocalDateTime reservationTime){
+			return "[쉽닥] 병원 예약 안내\n"
+			+ "\n"
+			+ "안녕하세요, " + patientName + "님!\n"
+			+ "\n"
+			+ "오늘 " + hospital.getName() + "에서의 예약 시간 [예약 시간: " + convertToTimeText(reservationTime) + "]에 오지 못하셨습니다. \n"
+			+ "\n"
+			+ "다음 가능한 시간으로 자동 재예약을 해드렸습니다.\n"
+			+ "\n"
+			+ "새 예약 시간: [새 예약 시간: "+ convertToTimeText(reservationTime.plusHours(1)) +"]\n"
+			+ "\n"
+			+ "*참고로, 3회 이상 노쇼 시에는 선입금 비용이 환불되지 않으며, 자동 재예약이 불가하오니 주의해 주세요.\n"
+			+ "\n"
+			+ "쉽닥과 함께 건강을 지켜 나가세요!\n"
+			+ "\n"
+			+ "쉽닥 드림";
+	}
+
+	private String convertToTimeText(LocalDateTime reservationTime){
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분");
 		return reservationTime.format(formatter);
+	}
+
+	private Date convertLocalDateTimeToDate(LocalDateTime localDateTime){
+		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+		Instant instant = zonedDateTime.toInstant();
+		return Date.from(instant);
 	}
 }

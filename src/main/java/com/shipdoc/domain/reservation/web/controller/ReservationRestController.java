@@ -39,4 +39,6 @@ public class ReservationRestController {
 		return ApiResponse.onSuccess("정상적으로 예약을 취소했습니다.");
 	}
 
+
+
 }
