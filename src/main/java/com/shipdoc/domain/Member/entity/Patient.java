@@ -6,6 +6,7 @@ import java.util.List;
 import com.shipdoc.domain.Member.entity.mapping.Reservation;
 import com.shipdoc.domain.Member.enums.FamilyRelation;
 import com.shipdoc.domain.Member.enums.NationalityType;
+import com.shipdoc.domain.consultation.entity.Consultation;
 import com.shipdoc.global.entity.BaseEntity;
 
 import jakarta.persistence.CascadeType;
@@ -60,6 +61,9 @@ public class Patient extends BaseEntity {
 	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Reservation> reservationList;
 
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Consultation> consultationList;
+
 	// 연관 관계 편의 메서드
 
 	public void changeMember(Member member) {
@@ -73,5 +77,10 @@ public class Patient extends BaseEntity {
 
 	public void changePhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public void addConsultation(Consultation consultation) {
+		this.consultationList.add(consultation);
+		consultation.changePatient(this);
 	}
 }
