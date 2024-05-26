@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shipdoc.domain.Member.enums.NationalityType;
 import com.shipdoc.domain.Member.validation.annotation.PasswordMatch;
 import com.shipdoc.domain.Member.validation.annotation.ValidateRRN;
+import com.shipdoc.domain.reservation.validation.annotation.PhoneNumber;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -79,6 +80,13 @@ public class MemberRequestDto {
 
 		// 자녀 형식으로만 추가
 		// private FamilyRelation familyRelation;
+	}
+
+	@Getter
+	@Setter
+	public static class AcceptHeathCheckupNotificationRequestDto {
+		@PhoneNumber
+		private String phone;
 	}
 
 }

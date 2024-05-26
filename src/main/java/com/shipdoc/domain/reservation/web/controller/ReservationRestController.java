@@ -18,10 +18,12 @@ import com.shipdoc.global.response.ApiResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/reservation")
+@RequestMapping("/api/reservations")
 public class ReservationRestController {
 
 	private final ReservationCommandService reservationCommandService;
@@ -34,11 +36,10 @@ public class ReservationRestController {
 	}
 
 	@DeleteMapping("/{reservationId}")
-	public ApiResponse<String> cancelReservation(@PathVariable(name = "reservationId") Long reservationid, @LoginMember Member member){
+	public ApiResponse<String> cancelReservation(@PathVariable(name = "reservationId") Long reservationid,
+		@LoginMember Member member) {
 		reservationCommandService.cancelReservation(member, reservationid);
 		return ApiResponse.onSuccess("정상적으로 예약을 취소했습니다.");
 	}
-
-
 
 }

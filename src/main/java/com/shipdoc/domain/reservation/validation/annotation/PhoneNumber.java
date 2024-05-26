@@ -17,7 +17,7 @@ import jakarta.validation.Payload;
  */
 @Documented
 @Constraint(validatedBy = PhoneNumberValidator.class)
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PhoneNumber {
 	String message() default ("핸드폰 번호가 올바르지 않습니다.");

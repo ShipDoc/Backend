@@ -47,6 +47,9 @@ public class Patient extends BaseEntity {
 	@Column(name = "birth", nullable = false)
 	private LocalDate birth;
 
+	@Column(name = "phone")
+	private String phoneNumber;
+
 	@Enumerated(EnumType.STRING)
 	private FamilyRelation familyRelation;
 
@@ -66,5 +69,9 @@ public class Patient extends BaseEntity {
 	public void addReservation(Reservation reservation) {
 		reservationList.add(reservation);
 		reservation.changePatient(this);
+	}
+
+	public void changePhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 }
