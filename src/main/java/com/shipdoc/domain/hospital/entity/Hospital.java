@@ -3,6 +3,7 @@ package com.shipdoc.domain.hospital.entity;
 import java.util.List;
 
 import com.shipdoc.domain.Member.entity.mapping.Reservation;
+import com.shipdoc.domain.consultation.entity.Consultation;
 import com.shipdoc.domain.hospital.entity.mapping.FavoriteHospital;
 import com.shipdoc.domain.hospital.entity.mapping.Review;
 
@@ -68,6 +69,9 @@ public class Hospital {
 	@OneToMany(mappedBy = "hospital", cascade = CascadeType.PERSIST)
 	private List<Reservation> reservationList;
 
+	@OneToMany(mappedBy = "hospital", cascade = CascadeType.PERSIST)
+	private List<Consultation> consultationList;
+
 	@OneToOne(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
 	private BusinessHours businessHours;
 
@@ -91,5 +95,10 @@ public class Hospital {
 	public void changeBusinessHours(BusinessHours businessHours) {
 		this.businessHours = businessHours;
 		businessHours.changeHospital(this);
+	}
+
+	public void addConsultation(Consultation consultation) {
+		consultationList.add(consultation);
+		consultation.changeHospital(this);
 	}
 }
