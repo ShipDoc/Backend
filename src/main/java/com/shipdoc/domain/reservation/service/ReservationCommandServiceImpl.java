@@ -1,5 +1,8 @@
 package com.shipdoc.domain.reservation.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +18,7 @@ import com.shipdoc.domain.hospital.repository.HospitalRepository;
 import com.shipdoc.domain.reservation.converter.ReservationConverter;
 import com.shipdoc.domain.reservation.repository.ReservationRepository;
 import com.shipdoc.domain.reservation.web.dto.ReservationRequestDto;
+import com.shipdoc.global.sms.SmsSentService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ReservationCommandServiceImpl implements ReservationCommandService {
 
 	private final ReservationRepository reservationRepository;
-	private final PatientRepository patientRepository;
 	private final HospitalRepository hospitalRepository;
+
+	private final SmsSentService smsSentService;
 
 	@Override
 	public Reservation createReservation(ReservationRequestDto.CreateReservationRequestDto request, Member member) {
@@ -50,8 +55,37 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 			.orElseThrow(() -> new HospitalNotExistException());
 
 		hospital.addReservation(reservation);
-		//TODO 예약 문자 발송
+
+		// 예약 문자 발송
+		if(reservation.getPhoneNumber() != null) {
+			String smsId = smsSentService.sendScheduledMessage(reservation.getPhoneNumber(),
+				generateRemindMessageText(hospital, patient.getName(), reservation.getReservationTime()),
+				reservation.getReservationTime());
+			reservation.changeSmsId(smsId);
+		}
 
 		return reservationRepository.save(reservation);
+	}
+
+	private String generateRemindMessageText(Hospital hospital, String patientName, LocalDateTime reservationTime){
+			return "[쉽닥] 병원 예약 리마인드\n\n"
+			+ "안녕하세요, " + patientName + "님!\n"
+			+ "\n"
+			+ "곧 있을 병원 예약을 잊지 않으셨죠? \n"
+			+ "\n"
+			+ hospital.getName() +"에서의 진료 예약이 30분 후에 시작됩니다.\n"
+			+ "[예약 시간: " + ConvertToTimeText(reservationTime) + "]\n"
+			+ "\n"
+			+ "방문 시 필요한 서류와 신분증을 꼭 지참해 주세요. 늦지 않게 도착해 주시기 바랍니다.\n"
+			+ "\n"
+			+ "쉽닥과 함께 건강한 하루 되세요!\n"
+			+ "\n"
+			+ "쉽닥 드림\uD83D\uDC0F\n"
+			+ "\n";
+	}
+
+	private String ConvertToTimeText(LocalDateTime reservationTime){
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분");
+		return reservationTime.format(formatter);
 	}
 }

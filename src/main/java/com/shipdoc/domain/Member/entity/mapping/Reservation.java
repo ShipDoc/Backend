@@ -41,6 +41,12 @@ public class Reservation extends BaseEntity {
 	@Column(name = "absence_count", nullable = false)
 	private Integer absenceCount;
 
+	@Column(name ="phone_number")
+	private String phoneNumber;
+
+	@Column(name = "sms_id")
+	private String smsId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
@@ -57,6 +63,10 @@ public class Reservation extends BaseEntity {
 
 	public void changeHospital(Hospital hospital) {
 		this.hospital = hospital;
+	}
+
+	public void changeSmsId(String smsId){
+		this.smsId = smsId;
 	}
 
 }
