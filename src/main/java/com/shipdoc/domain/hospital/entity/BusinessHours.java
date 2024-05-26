@@ -80,8 +80,24 @@ public class BusinessHours {
 	// 현재 시각에 대해 영업중인지 확인하는 메서드
 	public boolean isOpenNow() {
 		LocalDateTime now = LocalDateTime.now();
-		DayOfWeek dayOfWeek = now.getDayOfWeek();
 		LocalTime currentTime = now.toLocalTime();
+		String hours = getTodayHours();
+
+		if (hours.equals("휴무")) {
+			return false;
+		}
+
+		LocalTime[] timeRange = parseTimeRange(hours);
+		LocalTime start = timeRange[0];
+		LocalTime end = timeRange[1];
+
+		return !currentTime.isBefore(start) && !currentTime.isAfter(end);
+	}
+
+	public String getTodayHours() {
+		LocalDateTime now = LocalDateTime.now();
+		DayOfWeek dayOfWeek = now.getDayOfWeek();
+
 		String hours = "";
 
 		switch (dayOfWeek) {
@@ -108,14 +124,6 @@ public class BusinessHours {
 				break;
 		}
 
-		if (hours.equals("휴무")) {
-			return false;
-		}
-
-		LocalTime[] timeRange = parseTimeRange(hours);
-		LocalTime start = timeRange[0];
-		LocalTime end = timeRange[1];
-
-		return !currentTime.isBefore(start) && !currentTime.isAfter(end);
+		return hours;
 	}
 }

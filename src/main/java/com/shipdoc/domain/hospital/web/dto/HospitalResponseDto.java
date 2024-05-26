@@ -80,4 +80,16 @@ public class HospitalResponseDto {
 		Boolean isLast;
 	}
 
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class GetReservationDetailsResponseDto {
+		// TODO 환자로 정보 변경
+		private String name;
+		private String startTime;
+		private String endTime;
+		private String phone;
+	}
+
 }

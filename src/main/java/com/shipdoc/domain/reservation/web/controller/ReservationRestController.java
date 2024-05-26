@@ -41,5 +41,4 @@ public class ReservationRestController {
 		reservationCommandService.cancelReservation(member, reservationid);
 		return ApiResponse.onSuccess("정상적으로 예약을 취소했습니다.");
 	}
-
 }

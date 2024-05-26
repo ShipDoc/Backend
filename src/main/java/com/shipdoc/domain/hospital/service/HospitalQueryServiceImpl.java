@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shipdoc.domain.Member.entity.Member;
+import com.shipdoc.domain.Member.exception.PatientNotExistException;
 import com.shipdoc.domain.hospital.converter.HospitalConverter;
 import com.shipdoc.domain.hospital.entity.Hospital;
 import com.shipdoc.domain.hospital.entity.mapping.Review;
@@ -51,6 +52,30 @@ public class HospitalQueryServiceImpl implements HospitalQueryService {
 		List<ReviewResponseDto.ReviewDetailResponseDto> reviewList = reviewQueryService.getReviewDetailList(member,
 			reviewPage);
 		return HospitalConverter.toHospitalDetailResponseDto(hospital, reviewList);
+	}
+
+	@Override
+	public HospitalResponseDto.GetReservationDetailsResponseDto getReservationDetails(Long hospitalId, Member member) {
+		Hospital hospital = hospitalRepository.findById(hospitalId).orElseThrow(() -> new HospitalNotExistException());
+		String hours = hospital.getBusinessHours().getTodayHours();
+		String startTime = null;
+		String endTime = null;
+		if (!hours.equals("휴무")) {
+			String[] split = hours.split(" ~ ");
+			startTime = split[0];
+			endTime = split[1];
+		}
+
+		if (member.getPatientList().isEmpty()) {
+			throw new PatientNotExistException();
+		}
+
+		return HospitalResponseDto.GetReservationDetailsResponseDto.builder()
+			.startTime(startTime)
+			.endTime(endTime)
+			.phone(member.getPhone())
+			.name(member.getPatientList().get(0).getName())
+			.build();
 	}
 
 }

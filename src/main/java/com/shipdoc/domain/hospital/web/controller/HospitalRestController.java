@@ -59,4 +59,10 @@ public class HospitalRestController {
 		return ApiResponse.onSuccess(hospitalQueryService.getHospitalDetail(hospitalId, member));
 	}
 
+	@GetMapping("/{hospitalId}/reservation")
+	public ApiResponse<HospitalResponseDto.GetReservationDetailsResponseDto> getReservationDetails(
+		@LoginMember Member member, @PathVariable(name = "hospitalId") Long hospitalId) {
+		return ApiResponse.onSuccess(hospitalQueryService.getReservationDetails(hospitalId, member));
+	}
+
 }

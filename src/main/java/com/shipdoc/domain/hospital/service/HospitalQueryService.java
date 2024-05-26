@@ -9,4 +9,6 @@ public interface HospitalQueryService {
 		ReviewSortStatus sortStatus, Long hospitalId, Member member);
 
 	HospitalResponseDto.HospitalDetailResponseDto getHospitalDetail(Long hospitalId, Member member);
+
+	HospitalResponseDto.GetReservationDetailsResponseDto getReservationDetails(Long hospitalId, Member member);
 }
