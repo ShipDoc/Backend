@@ -15,7 +15,7 @@ public class HospitalConverter {
 	public static HospitalResponseDto.HospitalDetailResponseDto toHospitalDetailResponseDto(Hospital hospital,
 		List<ReviewResponseDto.ReviewDetailResponseDto> reviewList) {
 
-		boolean openNow = hospital.getBusinessHours().isOpenNow();
+		String openNow = hospital.getBusinessHours().isOpenNow();
 		return HospitalResponseDto.HospitalDetailResponseDto.builder()
 			.hospitalId(hospital.getId())
 			.KakaoPlaceId(hospital.getKakaoId())
@@ -92,8 +92,8 @@ public class HospitalConverter {
 			.build();
 	}
 
-	private static Integer generateRandomWaitingCount(Boolean isOpenNow) {
-		if (!isOpenNow) {
+	private static Integer generateRandomWaitingCount(String isOpenNow) {
+		if (isOpenNow.equals("CLOSED") || isOpenNow.equals("BREAK_TIME")) {
 			return 0;
 		} else {
 			return new Random().nextInt(15);

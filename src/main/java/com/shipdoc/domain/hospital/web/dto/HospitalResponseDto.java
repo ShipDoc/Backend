@@ -24,7 +24,7 @@ public class HospitalResponseDto {
 		private Double latitude;
 		private Double longitude;
 		private String department;
-		private Boolean isOpenNow;
+		private String isOpenNow;
 		private Integer waitingCount;
 		private List<ReviewResponseDto.ReviewDetailResponseDto> reviewList;
 		// TODO 즐겨찾기 한 병원인지 구분
