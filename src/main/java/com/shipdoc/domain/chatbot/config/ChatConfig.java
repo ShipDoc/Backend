@@ -28,8 +28,33 @@ public class ChatConfig {
             "피부", "Symptoms-Dermatology",
             "감기", "Symptoms-InternalMedicine",
             "허리", "Symptoms-Neurosurgery",
-            "안과", "Symptoms-Ophthalmology"
-            // 필요한 다른 매핑 추가
+            "눈",  "Symptoms-Ophthalmology",
+            "두통", "Symptoms-InternalMedicine",
+            "인후통", "Symptoms-Otolaryngology",
+            "메스꺼움", "Symptoms-InternalMedicine",
+            "복통", "Symptoms-InternalMedicine"
+            //"몸살", "Symptoms-InternalMedicine"
+            //"설사", "Symptoms-InternalMedicine",
+            //"기침", "Symptoms-InternalMedicine",
+            //"발열", "Symptoms-InternalMedicine",
+            //"관절통", "Symptoms-Neurosurgery"// 필요한 다른 매핑 추가
+    );
+    private static final Map<String, String> symptomMap2 = Map.of(
+            "관절", "Symptoms-Orthopedics",
+            "기침", "Symptoms-Otolaryngology",
+            "발진", "Symptoms-Dermatology",
+            "설사", "Symptoms-InternalMedicine",
+            "관절통", "Symptoms-Neurosurgery",
+            "발열",  "Symptoms-InternalMedicine",
+            "구토", "Symptoms-InternalMedicine",
+            "어지럼증", "Symptoms-Otolaryngology",
+            "몸살", "Symptoms-InternalMedicine",
+            "콧물", "Symptoms-InternalMedicine"
+            //"몸살", "Symptoms-InternalMedicine"
+            //"설사", "Symptoms-InternalMedicine",
+            //"기침", "Symptoms-InternalMedicine",
+            //"발열", "Symptoms-InternalMedicine",
+            //"관절통", "Symptoms-Neurosurgery"// 필요한 다른 매핑 추가
     );
 
     public ChatConfig(String credentialFile, String project) throws FileNotFoundException, IOException {
@@ -70,6 +95,17 @@ public class ChatConfig {
                     responseBuilder.append(fieldName).append(": ").append(value.getStringValue()).append("\n");
                 }
             }
+            else{
+                for (Map.Entry<String, String> entry2 : symptomMap2.entrySet()) {
+                    String keyword2 = entry2.getKey();
+                    String fieldName2 = entry2.getValue();
+                    if (message.contains(keyword2) && parameters.containsFields(fieldName2)) {
+                        ListValue listValue = parameters.getFieldsOrThrow(fieldName2).getListValue();
+                        for (Value value : listValue.getValuesList()) {
+                            responseBuilder.append(fieldName2).append(": ").append(value.getStringValue()).append("\n");
+                        }
+                    }
+            }}
         }
 
         logger.info("Response: " + responseBuilder.toString());

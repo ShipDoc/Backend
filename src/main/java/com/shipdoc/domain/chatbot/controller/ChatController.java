@@ -42,6 +42,4 @@ public class ChatController {
         return ApiResponse.onSuccess(client.request(sessionId, msg.getMessageSent()));
     }
 
-
-
 }
