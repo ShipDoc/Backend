@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shipdoc.domain.Member.entity.Member;
 import com.shipdoc.domain.Member.entity.mapping.ReviewRecommend;
+import com.shipdoc.domain.Member.exception.PatientNotExistException;
+import com.shipdoc.domain.consultation.repository.ConsultationRepository;
 import com.shipdoc.domain.hospital.converter.ReviewConverter;
 import com.shipdoc.domain.hospital.entity.Hospital;
 import com.shipdoc.domain.hospital.entity.mapping.Review;
@@ -16,6 +18,7 @@ import com.shipdoc.domain.hospital.repository.HospitalRepository;
 import com.shipdoc.domain.hospital.repository.ReviewRecommendRepository;
 import com.shipdoc.domain.hospital.repository.ReviewRepository;
 import com.shipdoc.domain.hospital.web.dto.ReviewRequestDto;
+import com.shipdoc.domain.reservation.repository.ReservationRepository;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.exception.GeneralException;
 
@@ -28,9 +31,16 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 	private final ReviewRepository reviewRepository;
 	private final HospitalRepository hospitalRepository;
 	private final ReviewRecommendRepository reviewRecommendRepository;
+	private final ReservationRepository reservationRepository;
+	private final ConsultationRepository consultationRepository;
 
 	@Override
 	public Review createReview(ReviewRequestDto.createReviewRequestDto request, Member member, Long hospitalId) {
+		// 병원 검진을 받은 작성자인지 검증
+		if(member.getPatientList().isEmpty()){
+			throw new PatientNotExistException();
+		}
+		consultationRepository.findByPatientIdAndHospitalId(member.getPatientList().get(0).getId(), hospitalId).orElseThrow(() -> new GeneralException(ErrorStatus._FORBIDDEN));
 		Review review = ReviewConverter.toReview(request);
 		Hospital hospital = hospitalRepository.findById(hospitalId).orElseThrow(() -> new HospitalNotExistException());
 		member.addReview(review);
