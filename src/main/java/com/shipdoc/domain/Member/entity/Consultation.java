@@ -29,15 +29,27 @@ public class Consultation extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id")
-    private Hospital hospitalId; // 병원 ID
+    private Hospital hospital; // 병원 ID
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
-    private Patient patientId; // 환자 ID
+    private Patient patient; // 환자 ID
 
     @Column(name = "diagnosis", nullable = false)
     private String diagnosis; // 진료 결과
 
     @Column(name = "ai_recommend")
     private String aiRecommend; // AI 추천 내용
+
+    public Long getHospitalId() {
+        Hospital h = new Hospital();
+        Long id = h.getId();
+        return id;
+    }
+
+    public Long getPatientId() {
+        Patient p = new Patient();
+        Long id = p.getId();
+        return id;
+    }
 }
