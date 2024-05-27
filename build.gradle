@@ -48,6 +48,7 @@ dependencies {
 
     // SMS coolsms API
     implementation 'net.nurigo:sdk:4.3.0'
+    implementation 'com.google.cloud:google-cloud-dialogflow:4.18.0'
 }
 
 tasks.named('test') {
