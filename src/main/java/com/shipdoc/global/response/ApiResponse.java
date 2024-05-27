@@ -2,6 +2,7 @@ package com.shipdoc.global.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.shipdoc.global.enums.statuscode.BaseCode;
+import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.enums.statuscode.SuccessStatus;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +31,6 @@ public class ApiResponse<T> {
 
 	// 실패한 경우 응답 생성
 	public static <T> ApiResponse<T> onFailure(String code, String message, T data) {
-		return new ApiResponse<>(false, code, message, data);
+		return new ApiResponse<>(false, ErrorStatus._BAD_REQUEST.getCode(), ErrorStatus._BAD_REQUEST.getMessage(), data);
 	}
 }
