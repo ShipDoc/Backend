@@ -21,7 +21,7 @@ public class SearchRestController {
 	private final SearchQueryService searchQueryService;
 
 	@PostMapping("/symptom")
-	public ApiResponse<SearchResponseDto.SearchQueryResponseDto> searchWithsymptom(
+	public ApiResponse<SearchResponseDto.SearchQueryResponseDto> searchWithSymptom(
 		@Valid @RequestBody SearchRequestDto.SearchSymptomRequestDto request) {
 		return ApiResponse.onSuccess(searchQueryService.getNearbyHospitalWithSymptom(request));
 	}
@@ -30,5 +30,17 @@ public class SearchRestController {
 	public ApiResponse<SearchResponseDto.SearchQueryResponseDto> searchWithCategory(
 		@Valid @RequestBody SearchRequestDto.SearchCategoryRequestDto request) {
 		return ApiResponse.onSuccess(searchQueryService.getNearbyHospitalWithCategory(request));
+	}
+
+	@PostMapping("/health-checkup")
+	public ApiResponse<SearchResponseDto.SearchQueryResponseDto> searchWithHealthCheckup(
+		@Valid @RequestBody SearchRequestDto.SearchNearbyHospitalRequestDto request) {
+		return ApiResponse.onSuccess(searchQueryService.getNearbyHospitalWithHealthCheckup(request));
+	}
+
+	@PostMapping("")
+	public ApiResponse<SearchResponseDto.SearchQueryResponseDto> searchNearby(
+		@Valid @RequestBody SearchRequestDto.SearchNearbyHospitalRequestDto request) {
+		return ApiResponse.onSuccess(searchQueryService.getAllNearbyHospital(request));
 	}
 }

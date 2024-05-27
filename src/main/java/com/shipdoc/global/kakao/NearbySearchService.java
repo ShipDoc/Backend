@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shipdoc.domain.search.enums.HospitalSortCriteria;
 import com.shipdoc.domain.search.enums.MedicalDepartment;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.exception.GeneralException;
@@ -32,26 +31,13 @@ public class NearbySearchService {
 
 	private final ObjectMapper objectMapper;
 
-	public List<KakaoResponseDto.PlaceDetail> findByCategoryList(List<MedicalDepartment> departmentList,
+	public List<KakaoResponseDto.PlaceDetail> findByCategory(MedicalDepartment category,
 		double latitude,
-		double longitude, Long size, String keyword, HospitalSortCriteria sort) {
-		Long remain = size;
-		Long listSize = (long)departmentList.size() + 1;
+		double longitude, Long size) {
 
 		List<KakaoResponseDto.PlaceDetail> placeDetailList = new ArrayList<>();
-		for (MedicalDepartment department : departmentList) {
-			Long elementSize = remain / listSize;
-			for (KakaoResponseDto.PlaceDetail placeDetail : findByKeyword(department.getKoreanName(), latitude,
-				longitude, elementSize, sort)) {
-				placeDetailList.add(placeDetail);
-			}
-			listSize--;
-			remain -= elementSize;
-		}
-
-		Long elementSize = remain;
-		for (KakaoResponseDto.PlaceDetail placeDetail : findByKeyword(keyword, latitude,
-			longitude, elementSize, sort)) {
+		for (KakaoResponseDto.PlaceDetail placeDetail : findByKeyword(category.getKoreanName(), latitude,
+			longitude, size)) {
 			placeDetailList.add(placeDetail);
 		}
 
@@ -60,7 +46,7 @@ public class NearbySearchService {
 
 	public List<KakaoResponseDto.PlaceDetail> findByCategoryList(List<MedicalDepartment> departmentList,
 		double latitude,
-		double longitude, Long size, HospitalSortCriteria sort) {
+		double longitude, Long size) {
 
 		Long remain = size;
 		Long listSize = (long)departmentList.size();
@@ -69,7 +55,7 @@ public class NearbySearchService {
 		for (MedicalDepartment department : departmentList) {
 			Long elementSize = remain / listSize;
 			for (KakaoResponseDto.PlaceDetail placeDetail : findByKeyword(department.getKoreanName(), latitude,
-				longitude, elementSize, sort)) {
+				longitude, elementSize)) {
 				placeDetailList.add(placeDetail);
 			}
 			listSize--;
@@ -80,7 +66,7 @@ public class NearbySearchService {
 	}
 
 	public List<KakaoResponseDto.PlaceDetail> findByKeyword(String keyword, double latitude, double longitude,
-		Long size, HospitalSortCriteria sort) {
+		Long size) {
 		RestTemplate restTemplate = new RestTemplate();
 
 		HttpHeaders headers = new HttpHeaders();
@@ -90,8 +76,8 @@ public class NearbySearchService {
 
 		String url =
 			"https://dapi.kakao.com/v2/local/search/keyword.json?y=" + latitude + "&x=" + longitude
-				+ "&radius=10000&category_group_code=HP8&sort=" + sort.getValue() + "&query=" + keyword + "&size="
-				+ size;
+				+ "&radius=10000&category_group_code=HP8&sort=distance&size="
+				+ size + "&query=" + keyword;
 
 		ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, header, String.class);
 

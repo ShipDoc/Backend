@@ -21,7 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shipdoc.domain.Member.repository.MemberRepository;
-import com.shipdoc.domain.Member.service.MemberCommandService;
 import com.shipdoc.domain.Member.service.MemberQueryService;
 import com.shipdoc.global.security.LoginService;
 import com.shipdoc.global.security.jwt.JwtService;
@@ -49,7 +48,6 @@ public class SecurityConfig {
 	private final JwtLoginFailureHandler jwtLoginFailureHandler;
 	private final MemberQueryService memberQueryService;
 
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
@@ -59,8 +57,11 @@ public class SecurityConfig {
 			.sessionManagement(session -> session.sessionCreationPolicy(
 				SessionCreationPolicy.STATELESS)) // Token 기반 인증 => session 사용 X
 			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/members", "/api/members/sms" ,"/api/members/sms/verify").permitAll() // 허용된 주소
-				.requestMatchers(HttpMethod.GET, "/api/reservation/check-all").permitAll() // 허용된 주소
+
+
+				.requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/members", "/api/members/sms",
+					"/api/members/sms/verify").permitAll() // 허용된 주소
+
 				.anyRequest().authenticated()
 			)
 			// CORS

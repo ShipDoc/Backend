@@ -2,7 +2,7 @@ package com.shipdoc.domain.search.web.dto;
 
 import java.util.List;
 
-import com.shipdoc.global.kakao.dto.KakaoResponseDto;
+import com.shipdoc.domain.hospital.web.dto.HospitalResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,17 @@ public class SearchResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class SearchQueryResponseDto {
-		private List<KakaoResponseDto.PlaceDetail> placeDetailList;
+		private List<HospitalResponseDto.HospitalPreviewResponseDto> hospitalList;
 		private Long size;
+	}
+
+	@Getter
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class HospitalSearchResponseDto {
+		private String keyword;
+		private List<HospitalResponseDto.HospitalPreviewResponseDto> hospitalList;
+		private Integer size;
 	}
 }

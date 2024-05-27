@@ -33,6 +33,7 @@ public class JwtLoginFailureHandler implements AuthenticationFailureHandler {
 		AuthenticationException exception) throws
 		IOException, ServletException {
 		response.setContentType("application/json;charset=UTF-8");
+		response.setStatus(400);
 		response.getWriter().write(objectMapper.writeValueAsString(
 			ApiResponse.onFailure(ErrorStatus._BAD_REQUEST.getCode(),ErrorStatus._BAD_REQUEST.getMessage(), "로그인에 실패했습니다.")));
 		log.info("Jwt Login fail :: error = {}", exception.getMessage());

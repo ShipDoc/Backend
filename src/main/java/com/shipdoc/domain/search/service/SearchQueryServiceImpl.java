@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.shipdoc.domain.hospital.service.HospitalCommandService;
 import com.shipdoc.domain.search.converter.SearchConverter;
 import com.shipdoc.domain.search.enums.MedicalDepartment;
 import com.shipdoc.domain.search.enums.Symptom;
@@ -20,7 +21,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SearchQueryServiceImpl implements SearchQueryService {
 	private final NearbySearchService nearbySearchService;
+	private final HospitalCommandService hospitalCommandService;
 
+	@Override
 	public SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithSymptom(
 		SearchRequestDto.SearchSymptomRequestDto request) {
 		List<MedicalDepartment> categoryList = request.getSymptomList()
@@ -29,14 +32,18 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 			.collect(Collectors.toSet()).stream().collect(Collectors.toList());
 
 		List<KakaoResponseDto.PlaceDetail> placeDetailList = nearbySearchService.findByCategoryList(categoryList,
-			request.getLatitude(), request.getLongitude(), request.getSize(), request.getSort());
+			request.getLatitude(), request.getLongitude(), request.getSize());
 		Collections.sort(placeDetailList);
 
-		return SearchConverter.toSearchQueryResponseDto(placeDetailList);
+		return SearchConverter.toSearchQueryResponseDto(
+			hospitalCommandService.saveNotExistHospitals(placeDetailList, request.getSort()));
 	}
 
+	@Override
 	public SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithCategory(
 		SearchRequestDto.SearchCategoryRequestDto request) {
+		List<KakaoResponseDto.PlaceDetail> placeDetailList;
+
 		boolean hasOtherCategory = false;
 		for (MedicalDepartment department : request.getCategory()) {
 			if (department == MedicalDepartment.OTHERS) {
@@ -44,17 +51,40 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 			}
 		}
 
-		List<KakaoResponseDto.PlaceDetail> placeDetailList;
-
-		if (!hasOtherCategory) {
-			placeDetailList = nearbySearchService.findByCategoryList(
-				request.getCategory(), request.getLatitude(), request.getLongitude(), request.getSize(),
-				request.getSort());
+		if (hasOtherCategory) {
+			placeDetailList = nearbySearchService.findByKeyword(
+				request.getKeyword(), request.getLatitude(), request.getLongitude(), request.getSize());
 		} else {
 			placeDetailList = nearbySearchService.findByCategoryList(request.getCategory(), request.getLatitude(),
-				request.getLongitude(), request.getSize(), request.getKeyword(), request.getSort());
+				request.getLongitude(), request.getSize());
 		}
 		Collections.sort(placeDetailList);
-		return SearchConverter.toSearchQueryResponseDto(placeDetailList);
+
+		return SearchConverter.toSearchQueryResponseDto(
+			hospitalCommandService.saveNotExistHospitals(placeDetailList, request.getSort()));
+	}
+
+	@Override
+	public SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithHealthCheckup(
+		SearchRequestDto.SearchNearbyHospitalRequestDto request) {
+		List<KakaoResponseDto.PlaceDetail> placeDetailList = nearbySearchService.findByKeyword("내과",
+			request.getLatitude(),
+			request.getLongitude(), request.getSize());
+
+		Collections.sort(placeDetailList);
+		return SearchConverter.toSearchQueryResponseDto(
+			hospitalCommandService.saveNotExistHospitals(placeDetailList, request.getSort()));
+	}
+
+	@Override
+	public SearchResponseDto.SearchQueryResponseDto getAllNearbyHospital(
+		SearchRequestDto.SearchNearbyHospitalRequestDto request) {
+		List<KakaoResponseDto.PlaceDetail> placeDetailList = nearbySearchService.findByKeyword("병원",
+			request.getLatitude(),
+			request.getLongitude(), request.getSize());
+
+		Collections.sort(placeDetailList);
+		return SearchConverter.toSearchQueryResponseDto(
+			hospitalCommandService.saveNotExistHospitals(placeDetailList, request.getSort()));
 	}
 }

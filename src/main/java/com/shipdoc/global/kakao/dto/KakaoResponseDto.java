@@ -33,10 +33,12 @@ public class KakaoResponseDto {
 		private String address;
 
 		@JsonProperty("x")
-		private String longitude;
+		private Double longitude;
 
 		@JsonProperty("y")
-		private String latitude;
+		private Double latitude;
+		@JsonProperty("category_name")
+		private String categoryName;
 
 		@Override
 		public int compareTo(PlaceDetail o) {

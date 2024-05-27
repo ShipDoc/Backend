@@ -9,4 +9,10 @@ public interface SearchQueryService {
 
 	SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithCategory(
 		SearchRequestDto.SearchCategoryRequestDto request);
+
+	SearchResponseDto.SearchQueryResponseDto getNearbyHospitalWithHealthCheckup(
+		SearchRequestDto.SearchNearbyHospitalRequestDto request);
+
+	SearchResponseDto.SearchQueryResponseDto getAllNearbyHospital(
+		SearchRequestDto.SearchNearbyHospitalRequestDto request);
 }

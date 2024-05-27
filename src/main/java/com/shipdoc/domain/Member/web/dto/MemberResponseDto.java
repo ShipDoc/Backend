@@ -16,8 +16,27 @@ public class MemberResponseDto {
 	@Getter
 	@NoArgsConstructor
 	@AllArgsConstructor
-	public static class SignupResponseDto{
+	public static class SignupResponseDto {
 		private Long memberId;
 		private LocalDateTime createdAt;
 	}
+
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class AddPatientResponseDto {
+		private Long patientId;
+		private LocalDateTime createdAt;
+	}
+
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class HealthCheckUpNotificationDto {
+		private String phone;
+		private boolean acceptNotification;
+	}
+
 }
