@@ -6,6 +6,7 @@ package com.shipdoc.domain.chatbot.controller;
 import com.shipdoc.domain.chatbot.config.ChatConfig;
 import com.shipdoc.domain.chatbot.entity.Chat;
 import com.shipdoc.domain.chatbot.service.IChatService;
+import com.shipdoc.global.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class ChatController {
     @CrossOrigin
     @PostMapping("/send-msg")
     @ResponseBody
-    public String sendMessage(@RequestBody Chat msg) throws FileNotFoundException, IOException  {
+    public ApiResponse<String> sendMessage(@RequestBody Chat msg) throws FileNotFoundException, IOException  {
         File file = new File("src/main/resources/test-iwdw-e3b736d87722.json");
         String CREDENTIAL_FILE = file.getAbsolutePath();
         String PROJECT_ID = "test-iwdw";
@@ -38,7 +39,7 @@ public class ChatController {
         String sessionId = UUID.randomUUID().toString();
         Chat chat = new Chat(msg.getMessageSent(), client.request(sessionId,msg.getMessageSent()));
         chatService.addChat(chat);
-        return client.request(sessionId, msg.getMessageSent());
+        return ApiResponse.onSuccess(client.request(sessionId, msg.getMessageSent()));
     }
 
 
