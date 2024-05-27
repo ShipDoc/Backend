@@ -47,7 +47,9 @@ public class HospitalCommandServiceImpl implements HospitalCommandService {
 		} else if (sort == HospitalSortStatus.SCORE) {
 			result.sort(
 				Comparator.comparingDouble(HospitalResponseDto.HospitalPreviewResponseDto::getTotalRate).reversed());
-		} else {
+		} else if (sort == HospitalSortStatus.DISTANCE){
+
+		} else{
 			throw new GeneralException(ErrorStatus._INVALID_HOSPITAL_SORT_STATUS);
 		}
 
