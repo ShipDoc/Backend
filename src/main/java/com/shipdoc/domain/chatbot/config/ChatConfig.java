@@ -49,7 +49,7 @@ public class ChatConfig {
         StringBuilder responseBuilder = new StringBuilder();
         responseBuilder.append("Fulfillment Text: ").append(queryResult.getFulfillmentText()).append("\n");
 
-        boolean parameters = queryResult.getParameters().containsFields("Symptoms-Orthopedics");
+        Struct parameters = queryResult.getParameters();
             responseBuilder.append(parameters);
 
         // Assuming "clinic" is the entity name for "이비인 후과"
