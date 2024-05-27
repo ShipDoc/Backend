@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("api/chatbot")
 public class ChatController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class ChatController {
 
 
     @CrossOrigin
-    @PostMapping("/send-msg")
+    @PostMapping("/msg")
     @ResponseBody
     public ApiResponse<String> sendMessage(@RequestBody Chat msg) throws FileNotFoundException, IOException  {
         File file = new File("src/main/resources/test-iwdw-e3b736d87722.json");
