@@ -17,6 +17,7 @@ public class HospitalResponseDto {
 		private Long hospitalId;
 		private String KakaoPlaceId;
 		private String phone;
+		private Double totalRate;
 		private String placeName;
 		private String placeUrl;
 		private String imageUrl;

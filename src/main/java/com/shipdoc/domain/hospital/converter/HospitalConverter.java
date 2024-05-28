@@ -13,7 +13,7 @@ import com.shipdoc.domain.hospital.web.dto.ReviewResponseDto;
 
 public class HospitalConverter {
 	public static HospitalResponseDto.HospitalDetailResponseDto toHospitalDetailResponseDto(Hospital hospital,
-		List<ReviewResponseDto.ReviewDetailResponseDto> reviewList) {
+		List<ReviewResponseDto.ReviewDetailResponseDto> reviewList, Double totalRate) {
 
 		String openNow = hospital.getBusinessHours().isOpenNow();
 		return HospitalResponseDto.HospitalDetailResponseDto.builder()
@@ -28,6 +28,7 @@ public class HospitalConverter {
 			.department(hospital.getDepartment())
 			.isOpenNow(openNow)
 			.imageUrl(hospital.getPhotoUrl())
+			.totalRate(totalRate == null ? 0.0 : Math.round(totalRate * 10) / 10.0)
 			//TODO 실제 예약 대기자 인원으로 변경
 			.waitingCount(generateRandomWaitingCount(openNow))
 			.reviewList(reviewList)

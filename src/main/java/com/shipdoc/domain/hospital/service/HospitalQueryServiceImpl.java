@@ -49,9 +49,11 @@ public class HospitalQueryServiceImpl implements HospitalQueryService {
 		Hospital hospital = hospitalRepository.findById(hospitalId).orElseThrow(() -> new HospitalNotExistException());
 
 		Page<Review> reviewPage = reviewQueryService.getReviewPage(ReviewSortStatus.RECOMMEND, 0, 3, hospitalId);
+		Double totalRate = hospitalRepository.findAverageScoreByHospitalId(hospitalId);
+
 		List<ReviewResponseDto.ReviewDetailResponseDto> reviewList = reviewQueryService.getReviewDetailList(member,
 			reviewPage);
-		return HospitalConverter.toHospitalDetailResponseDto(hospital, reviewList);
+		return HospitalConverter.toHospitalDetailResponseDto(hospital, reviewList, totalRate);
 	}
 
 	@Override
