@@ -24,6 +24,7 @@ public class ReviewResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class ReviewDetailResponseDto {
+		private Long reviewId;
 		private String createdAt;
 		private String name;
 		private Double score;

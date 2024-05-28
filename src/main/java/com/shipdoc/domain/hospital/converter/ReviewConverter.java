@@ -28,6 +28,7 @@ public class ReviewConverter {
 	public static ReviewResponseDto.ReviewDetailResponseDto toReviewDetailResponseDto(Review review, String name,
 		Boolean recommended, Integer recommendCount) {
 		return ReviewResponseDto.ReviewDetailResponseDto.builder()
+			.reviewId(review.getId())
 			.score(review.getScore())
 			.createdAt(convertCreatedAtToString(review.getCreatedAt()))
 			.name(maskName(name))
