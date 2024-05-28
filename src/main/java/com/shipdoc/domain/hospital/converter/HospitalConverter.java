@@ -16,6 +16,8 @@ public class HospitalConverter {
 		List<ReviewResponseDto.ReviewDetailResponseDto> reviewList, Double totalRate) {
 
 		String openNow = hospital.getBusinessHours().isOpenNow();
+		// TODO 일단 무조건 오픈으로
+		openNow = generateRandomOpenNow();
 		return HospitalResponseDto.HospitalDetailResponseDto.builder()
 			.hospitalId(hospital.getId())
 			.KakaoPlaceId(hospital.getKakaoId())
@@ -97,7 +99,19 @@ public class HospitalConverter {
 		if (isOpenNow.equals("CLOSED") || isOpenNow.equals("BREAK_TIME")) {
 			return 0;
 		} else {
-			return new Random().nextInt(15);
+			return new Random().nextInt(15) + 5;
+		}
+	}
+
+	private static String generateRandomOpenNow() {
+		Random random = new Random();
+		int i = random.nextInt(6);
+		if (i <= 3) {
+			return "OPEN";
+		} else if (i == 4) {
+			return "CLOSED";
+		} else {
+			return "BREAK_TIME";
 		}
 	}
 }
