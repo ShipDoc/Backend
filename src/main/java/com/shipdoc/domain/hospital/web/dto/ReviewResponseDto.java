@@ -32,4 +32,12 @@ public class ReviewResponseDto {
 		private Boolean recommended;
 		private Integer recommendCount;
 	}
+
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class ReviewRecommendResponseDto {
+		private Integer reviewCount;
+	}
 }

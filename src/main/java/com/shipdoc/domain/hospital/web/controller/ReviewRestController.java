@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shipdoc.domain.Member.entity.Member;
 import com.shipdoc.domain.hospital.service.ReviewCommandService;
+import com.shipdoc.domain.hospital.web.dto.ReviewResponseDto;
 import com.shipdoc.global.annotation.LoginMember;
 import com.shipdoc.global.response.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/reviews")
@@ -21,14 +23,18 @@ public class ReviewRestController {
 	private final ReviewCommandService reviewCommandService;
 
 	@PostMapping("/{reviewId}/recommend")
-	public ApiResponse<String> recommendReview(@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member){
-		reviewCommandService.addReviewRecommand(reviewId, member);
-		return ApiResponse.onSuccess("리뷰 추천에 성공했습니다.");
+	public ApiResponse<ReviewResponseDto.ReviewRecommendResponseDto> recommendReview(
+		@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member) {
+		Integer reviewCount = reviewCommandService.addReviewRecommand(reviewId, member);
+		return ApiResponse.onSuccess(
+			ReviewResponseDto.ReviewRecommendResponseDto.builder().reviewCount(reviewCount).build());
 	}
 
 	@DeleteMapping("/{reviewId}/recommend")
-	public ApiResponse<String> deleteReviewRecommend(@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member){
-		reviewCommandService.deleteReviewRecommend(reviewId, member);
-		return ApiResponse.onSuccess("리뷰 추천 해제를 성공했습니다.");
+	public ApiResponse<ReviewResponseDto.ReviewRecommendResponseDto> deleteReviewRecommend(
+		@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member) {
+		Integer reviewCount = reviewCommandService.deleteReviewRecommend(reviewId, member);
+		return ApiResponse.onSuccess(
+			ReviewResponseDto.ReviewRecommendResponseDto.builder().reviewCount(reviewCount).build());
 	}
 }
