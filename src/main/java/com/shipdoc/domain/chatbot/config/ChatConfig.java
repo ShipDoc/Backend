@@ -28,10 +28,10 @@ public class ChatConfig {
             "피부", "Symptoms-Dermatology",
             "감기", "Symptoms-InternalMedicine",
             "허리", "Symptoms-Neurosurgery",
-            "눈",  "Symptoms-Ophthalmology",
+            "시력",  "Symptoms-Ophthalmology",
             "두통", "Symptoms-InternalMedicine",
             "인후통", "Symptoms-Otolaryngology",
-            "메스꺼움", "Symptoms-InternalMedicine",
+            "메스꺼", "Symptoms-InternalMedicine",
             "복통", "Symptoms-InternalMedicine"
             //"몸살", "Symptoms-InternalMedicine"
             //"설사", "Symptoms-InternalMedicine",
@@ -47,7 +47,7 @@ public class ChatConfig {
             "관절통", "Symptoms-Neurosurgery",
             "발열",  "Symptoms-InternalMedicine",
             "구토", "Symptoms-InternalMedicine",
-            "어지럼증", "Symptoms-Otolaryngology",
+            "어지럼증", "Symptoms-Neurosurgery",
             "몸살", "Symptoms-InternalMedicine",
             "콧물", "Symptoms-InternalMedicine"
             //"몸살", "Symptoms-InternalMedicine"
