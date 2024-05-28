@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shipdoc.domain.Member.entity.Member;
 import com.shipdoc.domain.Member.entity.mapping.ReviewRecommend;
-import com.shipdoc.domain.Member.exception.PatientNotExistException;
 import com.shipdoc.domain.consultation.repository.ConsultationRepository;
 import com.shipdoc.domain.hospital.converter.ReviewConverter;
 import com.shipdoc.domain.hospital.entity.Hospital;
@@ -37,10 +36,10 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 	@Override
 	public Review createReview(ReviewRequestDto.createReviewRequestDto request, Member member, Long hospitalId) {
 		// 병원 검진을 받은 작성자인지 검증
-		if(member.getPatientList().isEmpty()){
-			throw new PatientNotExistException();
-		}
-		consultationRepository.findByPatientIdAndHospitalId(member.getPatientList().get(0).getId(), hospitalId).orElseThrow(() -> new GeneralException(ErrorStatus._FORBIDDEN));
+		// if(member.getPatientList().isEmpty()){
+		// 	throw new PatientNotExistException();
+		// }
+		// consultationRepository.findByPatientIdAndHospitalId(member.getPatientList().get(0).getId(), hospitalId).orElseThrow(() -> new GeneralException(ErrorStatus._FORBIDDEN));
 		Review review = ReviewConverter.toReview(request);
 		Hospital hospital = hospitalRepository.findById(hospitalId).orElseThrow(() -> new HospitalNotExistException());
 		member.addReview(review);
