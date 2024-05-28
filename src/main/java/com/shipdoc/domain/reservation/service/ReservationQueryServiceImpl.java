@@ -41,17 +41,20 @@ public class ReservationQueryServiceImpl implements ReservationQueryService {
 				.id(reservation.getId())
 				.name(patient.getName())
 				.reservationTime(reservation.getReservationTime())
-				.hospitalId(reservation.getHospital().getId())
 				.hospitalName(reservation.getHospital().getName())
-				.patientId(reservation.getPatient().getId())
-				.autoReservation(reservation.getAutoReservation())
 				.absenceCount(reservation.getAbsenceCount())
 				.smsId(reservation.getSmsId())
+				.autoReservation(reservation.getAutoReservation())
+				.hospitalAddress(reservation.getHospital().getAddress())
+				.kakaoUrl(reservation.getHospital().getKakaoUrl())
 				.build());
 		}
 
 		// 랜덤 예상 대기 시간 설정
 		ReservationListDto.setRandomEstimatedWaitTime(reservationResponses);
+
+		// 랜덤 대기자 현황 설정
+		ReservationListDto.setRandomEstimatedWaitPatient(reservationResponses);
 
 		return ApiResponse.onSuccess(new ReservationListDto.SearchReservationsRes(reservationResponses));
 	}

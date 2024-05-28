@@ -19,13 +19,14 @@ public class ReservationListDto {
 		private Long id; //예약 ID
 		private String name; // 환자 이름
 		private LocalDateTime reservationTime; //예약 날짜
-		private Long hospitalId; //병원 번호
 		private String hospitalName; //병원 이름
-		private Long patientId; //환자 고유 번호
-		private Boolean autoReservation; //자동 예약 여부
 		private Integer absenceCount; // 노쇼 횟수
 		private String smsId; //예약 문자 발송 ID
+		private Boolean autoReservation; //자동 예약 여부
+		private String hospitalAddress; // 병원 주소
+		private String kakaoUrl; // 병원 지도
 		private Long estimatedWaitTime; // 예상 대기 시간
+		private Long estimatedWaitPatient; // 대기자 현황
 	}
 
 	// 예약 내역 조회
@@ -45,6 +46,14 @@ public class ReservationListDto {
 		Random random = new Random();
 		for (ReservationResponse reservation : reservations) {
 			reservation.estimatedWaitTime = random.nextLong(60); // 예시로 0에서 60까지의 랜덤 값을 설정합니다.
+		}
+	}
+
+	// 랜덤 대기자 현황 설정 메서드
+	public static void setRandomEstimatedWaitPatient(List<ReservationResponse> reservations) {
+		Random random = new Random();
+		for (ReservationResponse reservation : reservations) {
+			reservation.estimatedWaitPatient = random.nextLong(30); // 예시로 0에서 30까지의 랜덤 값을 설정합니다.
 		}
 	}
 }
