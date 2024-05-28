@@ -38,6 +38,7 @@ public class ReviewResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class ReviewRecommendResponseDto {
-		private Integer recommended;
+		private boolean recommended;
+		private Integer recommendCount;
 	}
 }

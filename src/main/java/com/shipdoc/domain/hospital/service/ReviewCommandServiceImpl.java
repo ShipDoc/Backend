@@ -16,6 +16,7 @@ import com.shipdoc.domain.hospital.repository.HospitalRepository;
 import com.shipdoc.domain.hospital.repository.ReviewRecommendRepository;
 import com.shipdoc.domain.hospital.repository.ReviewRepository;
 import com.shipdoc.domain.hospital.web.dto.ReviewRequestDto;
+import com.shipdoc.domain.hospital.web.dto.ReviewResponseDto;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.exception.GeneralException;
 
@@ -44,7 +45,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 	}
 
 	@Override
-	public Integer addReviewRecommand(Long reviewId, Member member) {
+	public ReviewResponseDto.ReviewRecommendResponseDto addReviewRecommand(Long reviewId, Member member) {
 		Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
 
 		if (reviewRecommendRepository.existsByMemberIdAndReviewId(member.getId(), reviewId)) {
@@ -56,11 +57,15 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 		member.addReviewRecommend(reviewRecommend);
 
 		reviewRecommendRepository.save(reviewRecommend);
-		return reviewRecommendRepository.countByReviewId(review.getId());
+		Integer recommendCount = reviewRecommendRepository.countByReviewId(review.getId());
+		return ReviewResponseDto.ReviewRecommendResponseDto.builder()
+			.recommended(true)
+			.recommendCount(recommendCount)
+			.build();
 	}
 
 	@Override
-	public Integer deleteReviewRecommend(Long reviewId, Member member) {
+	public ReviewResponseDto.ReviewRecommendResponseDto deleteReviewRecommend(Long reviewId, Member member) {
 		Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
 
 		Optional<ReviewRecommend> reviewRecommendOptional = reviewRecommendRepository.findByMemberIdAndReviewId(
@@ -72,25 +77,36 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 			reviewRecommendRepository.delete(reviewRecommendOptional.get());
 		}
 
-		return reviewRecommendRepository.countByReviewId(review.getId());
+		Integer recommendCount = reviewRecommendRepository.countByReviewId(review.getId());
+		return ReviewResponseDto.ReviewRecommendResponseDto.builder()
+			.recommended(false)
+			.recommendCount(recommendCount)
+			.build();
 	}
 
-	public Integer changeReviewRecommend(Long reviewId, Member member) {
+	public ReviewResponseDto.ReviewRecommendResponseDto changeReviewRecommend(Long reviewId, Member member) {
 		Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
 
 		Optional<ReviewRecommend> reviewRecommendOptional = reviewRecommendRepository.findByMemberIdAndReviewId(
 			member.getId(), reviewId);
+		boolean recommended;
 		if (reviewRecommendOptional.isPresent()) {
+			recommended = true;
 			ReviewRecommend reviewRecommend = reviewRecommendOptional.get();
 			reviewRecommendRepository.delete(reviewRecommend);
-		} else {
-			ReviewRecommend reviewRecommend = ReviewRecommend.builder().build();
 
+		} else {
+			recommended = false;
+			ReviewRecommend reviewRecommend = ReviewRecommend.builder().build();
 			review.addReviewRecommand(reviewRecommend);
 			member.addReviewRecommend(reviewRecommend);
-
 			reviewRecommendRepository.save(reviewRecommend);
 		}
-		return reviewRecommendRepository.countByReviewId(review.getId());
+
+		Integer recommendCount = reviewRecommendRepository.countByReviewId(review.getId());
+		return ReviewResponseDto.ReviewRecommendResponseDto.builder()
+			.recommended(!recommended)
+			.recommendCount(recommendCount)
+			.build();
 	}
 }

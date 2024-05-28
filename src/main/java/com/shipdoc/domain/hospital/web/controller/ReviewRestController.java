@@ -26,24 +26,22 @@ public class ReviewRestController {
 	@PostMapping("/{reviewId}/recommend")
 	public ApiResponse<ReviewResponseDto.ReviewRecommendResponseDto> recommendReview(
 		@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member) {
-		Integer reviewCount = reviewCommandService.addReviewRecommand(reviewId, member);
 		return ApiResponse.onSuccess(
-			ReviewResponseDto.ReviewRecommendResponseDto.builder().recommended(reviewCount).build());
+			reviewCommandService.addReviewRecommand(reviewId, member));
 	}
 
 	@DeleteMapping("/{reviewId}/recommend")
 	public ApiResponse<ReviewResponseDto.ReviewRecommendResponseDto> deleteReviewRecommend(
 		@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member) {
-		Integer reviewCount = reviewCommandService.deleteReviewRecommend(reviewId, member);
+
 		return ApiResponse.onSuccess(
-			ReviewResponseDto.ReviewRecommendResponseDto.builder().recommended(reviewCount).build());
+			reviewCommandService.deleteReviewRecommend(reviewId, member));
 	}
 
 	@PutMapping("/{reviewId}/recommend")
 	public ApiResponse<ReviewResponseDto.ReviewRecommendResponseDto> changeReviewRecommend(
 		@PathVariable(name = "reviewId") Long reviewId, @LoginMember Member member) {
-		Integer reviewCount = reviewCommandService.changeReviewRecommend(reviewId, member);
-		return ApiResponse.onSuccess(
-			ReviewResponseDto.ReviewRecommendResponseDto.builder().recommended(reviewCount).build());
+
+		return ApiResponse.onSuccess(reviewCommandService.changeReviewRecommend(reviewId, member));
 	}
 }
