@@ -10,4 +10,6 @@ public interface ReviewCommandService {
 	Integer addReviewRecommand(Long reviewId, Member member);
 
 	Integer deleteReviewRecommend(Long reviewId, Member member);
+
+	Integer changeReviewRecommend(Long reviewId, Member member);
 }

@@ -74,4 +74,23 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 
 		return reviewRecommendRepository.countByReviewId(review.getId());
 	}
+
+	public Integer changeReviewRecommend(Long reviewId, Member member) {
+		Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotExistException());
+
+		Optional<ReviewRecommend> reviewRecommendOptional = reviewRecommendRepository.findByMemberIdAndReviewId(
+			member.getId(), reviewId);
+		if (reviewRecommendOptional.isPresent()) {
+			ReviewRecommend reviewRecommend = reviewRecommendOptional.get();
+			reviewRecommendRepository.delete(reviewRecommend);
+		} else {
+			ReviewRecommend reviewRecommend = ReviewRecommend.builder().build();
+
+			review.addReviewRecommand(reviewRecommend);
+			member.addReviewRecommend(reviewRecommend);
+
+			reviewRecommendRepository.save(reviewRecommend);
+		}
+		return reviewRecommendRepository.countByReviewId(review.getId());
+	}
 }
