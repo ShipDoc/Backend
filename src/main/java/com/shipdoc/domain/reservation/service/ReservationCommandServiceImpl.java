@@ -68,13 +68,14 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 
 		// 예약 문자 발송
 		addScheduledMessage(reservation, hospital.getName(), reservation.getPatient().getName());
+		Reservation save = reservationRepository.save(reservation);
 
 		// 예약 시간 1시간 이후 왔는지 체크 => 만약 아직 예약 기록이 있다면(도착하지 못했다면) 자동으로 다음 예약
 		schedulerService.scheduleTask(UUID.randomUUID().toString(),
 			() -> checkReservation(reservation.getId(), hospital.getName()),
 			convertLocalDateTimeToDate(reservation.getReservationTime()));
 
-		return reservationRepository.save(reservation);
+		return save;
 	}
 
 	public void checkReservation(Long reservationId, String hospitalName) {
@@ -92,8 +93,10 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 				return;
 			}
 
-			smsSentService.sendMessage(reservation.getPhoneNumber(),
-				generateMissingMessageText(hospitalName, patient.getName(), reservation.getReservationTime()));
+			if (reservation.getPhoneNumber() != null) {
+				smsSentService.sendMessage(reservation.getPhoneNumber(),
+					generateMissingMessageText(hospitalName, patient.getName(), reservation.getReservationTime()));
+			}
 			// TODO 예약 날짜 변경 (현재 60분 뒤로)
 			reservation.changeAbsenceCount();
 			reservation.changeReservationTime(reservation.getReservationTime().plusHours(1));

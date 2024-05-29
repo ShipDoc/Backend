@@ -13,7 +13,8 @@ public class ReservationConverter {
 
 	public static Reservation toReservation(ReservationRequestDto.CreateReservationRequestDto request) {
 		String phoneNumber = request.getPhoneNumber();
-		if(phoneNumber.isBlank()) phoneNumber = null;
+		if (phoneNumber != null && phoneNumber.isBlank())
+			phoneNumber = null;
 		return Reservation.builder()
 			.reservationTime(convertToLocalDateTime(request.getReservationDate(), request.getReservationTime()))
 			.autoReservation(request.getAutoReservation())
