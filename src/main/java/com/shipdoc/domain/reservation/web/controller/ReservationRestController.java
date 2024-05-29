@@ -1,6 +1,5 @@
 package com.shipdoc.domain.reservation.web.controller;
 
-import com.shipdoc.domain.Member.entity.Patient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +21,6 @@ import com.shipdoc.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -50,7 +47,6 @@ public class ReservationRestController {
 
 	@GetMapping("/check-all")
 	public ApiResponse<?> getAllReservation(@LoginMember Member member) {
-		Patient patient = member.getPatientList().get(0);
 		ApiResponse<?> result = reservationQueryService.getAllReservation(member);
 		return result;
 	}

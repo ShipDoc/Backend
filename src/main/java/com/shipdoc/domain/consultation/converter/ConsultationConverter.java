@@ -5,10 +5,11 @@ import com.shipdoc.domain.consultation.entity.Consultation;
 import com.shipdoc.domain.consultation.web.dto.ConsultationResponseDto;
 
 public class ConsultationConverter {
-	public static Consultation toConsultation(Reservation reservation, String diagnosis) {
+	public static Consultation toConsultation(Reservation reservation, String diagnosis, String aiRecommend) {
 		return Consultation.builder()
 			.reservationTime(reservation.getReservationTime())
 			.visitCount(1)
+			.aiRecommend(aiRecommend)
 			.diagnosis(diagnosis)
 			.build();
 	}

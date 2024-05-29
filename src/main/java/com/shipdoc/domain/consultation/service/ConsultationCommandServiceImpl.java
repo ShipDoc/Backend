@@ -11,6 +11,7 @@ import com.shipdoc.domain.consultation.web.dto.ConsultationRequestDto;
 import com.shipdoc.domain.consultation.web.dto.ConsultationResponseDto;
 import com.shipdoc.domain.reservation.exception.ReservationNotExistException;
 import com.shipdoc.domain.reservation.repository.ReservationRepository;
+import com.shipdoc.global.gpt.GptService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class ConsultationCommandServiceImpl implements ConsultationCommandService {
 	private final ConsultationRepository consultationRepository;
 	private final ReservationRepository reservationRepository;
+	private final GptService gptService;
 
 	@Override
 	public ConsultationResponseDto.ConsultationConvertResponseDto convertToConsultation(Long reservationId,
@@ -27,10 +29,12 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
 		Reservation reservation = reservationRepository.findById(reservationId)
 			.orElseThrow(() -> new ReservationNotExistException());
 
-		Consultation consultation = ConsultationConverter.toConsultation(reservation, request.getDiagnosis());
 		reservationRepository.delete(reservation);
 
-		// TODO 진단 결과 AI
+		// AI 진단 결과
+		String aiRecommend = gptService.gptChatCompletion(request.getDiagnosis());
+		Consultation consultation = ConsultationConverter.toConsultation(reservation, request.getDiagnosis(),
+			aiRecommend);
 		reservation.getHospital().addConsultation(consultation);
 		reservation.getPatient().addConsultation(consultation);
 		return ConsultationConverter.toConsultationConvertResponseDto(consultationRepository.save(consultation));
