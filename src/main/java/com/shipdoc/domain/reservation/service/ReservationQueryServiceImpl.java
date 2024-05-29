@@ -40,7 +40,7 @@ public class ReservationQueryServiceImpl implements ReservationQueryService {
 
 		for (Reservation reservation : reservations) {
 			reservationResponses.add(ReservationListDto.ReservationResponse.builder()
-				.id(reservation.getId())
+				.hospitalId(reservation.getHospital().getId())
 				.name(patient.getName())
 				.reservationTime(reservation.getReservationTime())
 				.hospitalName(reservation.getHospital().getName())

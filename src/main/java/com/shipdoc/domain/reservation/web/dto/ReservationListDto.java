@@ -16,7 +16,7 @@ public class ReservationListDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	@AllArgsConstructor
 	public static class ReservationResponse {
-		private Long id; //예약 ID
+		private Long hospitalId; //예약 ID
 		private String name; // 환자 이름
 		private LocalDateTime reservationTime; //예약 날짜
 		private String hospitalName; //병원 이름
