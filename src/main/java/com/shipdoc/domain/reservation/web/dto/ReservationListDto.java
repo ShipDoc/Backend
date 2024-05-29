@@ -45,7 +45,7 @@ public class ReservationListDto {
 	public static void setRandomEstimatedWaitTime(List<ReservationResponse> reservations) {
 		Random random = new Random();
 		for (ReservationResponse reservation : reservations) {
-			reservation.estimatedWaitTime = random.nextLong(60); // 예시로 0에서 60까지의 랜덤 값을 설정합니다.
+			reservation.estimatedWaitTime = reservation.estimatedWaitPatient * 5; // 예시로 대기 환자 수 * 5로 설정합니다.
 		}
 	}
 
