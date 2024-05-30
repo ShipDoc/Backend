@@ -2,13 +2,16 @@ package com.shipdoc.domain.Member.service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shipdoc.domain.Member.entity.Member;
+import com.shipdoc.domain.Member.entity.Patient;
 import com.shipdoc.domain.Member.entity.PhoneCertification;
+import com.shipdoc.domain.Member.exception.PatientNotExistException;
 import com.shipdoc.domain.Member.repository.MemberRepository;
 import com.shipdoc.domain.Member.repository.PhoneCertificationRepository;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
@@ -43,6 +46,15 @@ public class MemberQueryServiceImpl implements MemberQueryService{
 		if(!isWithinFiveMinute(phoneCertification.getCreatedAt())){
 			throw new GeneralException(ErrorStatus._EXPIRED_VERIFICATION_CODE);
 		}
+	}
+
+	@Override
+	public String getUserName(Member member){
+		List<Patient> patientList = member.getPatientList();
+		if(patientList.isEmpty()){
+			throw new PatientNotExistException();
+		}
+		return patientList.get(0).getName();
 	}
 
 	private static boolean isWithinFiveMinute(LocalDateTime timeToCheck) {

@@ -8,6 +8,7 @@ import com.shipdoc.domain.Member.web.dto.MemberRequestDto;
 public interface MemberQueryService {
 	Optional<Member> getMemberWithAuthorities(String loginId);
 	void certificateCheck(String phoneNumber, String verifyCode);
+	String getUserName(Member member);
 
 
 

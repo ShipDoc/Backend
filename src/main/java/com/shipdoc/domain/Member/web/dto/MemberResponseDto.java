@@ -39,4 +39,12 @@ public class MemberResponseDto {
 		private boolean acceptNotification;
 	}
 
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class UserNameResponseDto{
+		private String userName;
+	}
+
 }

@@ -127,4 +127,12 @@ public class MemberRestController {
 		return ApiResponse.onSuccess(patientQueryService.getHeathCheckupNotificationInfo(member));
 	}
 
+	@GetMapping("/user-name")
+	public ApiResponse<MemberResponseDto.UserNameResponseDto> getUserName(@LoginMember Member member){
+		String userName = memberQueryService.getUserName(member);
+		return ApiResponse.onSuccess(MemberResponseDto.UserNameResponseDto.builder()
+			.userName(userName).build());
+	}
+
+
 }
