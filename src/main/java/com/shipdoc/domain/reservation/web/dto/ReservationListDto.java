@@ -21,10 +21,13 @@ public class ReservationListDto {
 		private String name; // 환자 이름
 		private LocalDateTime reservationTime; //예약 날짜
 		private String hospitalName; //병원 이름
+		private String hospitalPhone; // 병원 전화번호
 		private Integer absenceCount; // 노쇼 횟수
 		private String smsId; //예약 문자 발송 ID
 		private Boolean autoReservation; //자동 예약 여부
 		private String hospitalAddress; // 병원 주소
+		private Double hospitalLatitude; // 병원 위도 좌표
+		private Double hospitalLongitude; //병원 경도 좌표
 		private String kakaoUrl; // 병원 지도
 		private Long estimatedWaitTime; // 예상 대기 시간
 		private Long estimatedWaitPatient; // 대기자 현황

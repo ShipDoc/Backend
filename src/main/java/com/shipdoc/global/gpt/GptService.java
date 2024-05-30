@@ -30,6 +30,7 @@ public class GptService {
 	private String apiUrl;
 
 	public String gptChatCompletion(String diagnosis) {
+
 		HttpClient client = HttpClient.newHttpClient();
 
 		String prompt =

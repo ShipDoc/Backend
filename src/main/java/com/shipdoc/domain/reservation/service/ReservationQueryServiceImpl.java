@@ -45,10 +45,13 @@ public class ReservationQueryServiceImpl implements ReservationQueryService {
 				.name(patient.getName())
 				.reservationTime(reservation.getReservationTime())
 				.hospitalName(reservation.getHospital().getName())
+				.hospitalPhone(reservation.getHospital().getPhoneNumber())
 				.absenceCount(reservation.getAbsenceCount())
 				.smsId(reservation.getSmsId())
 				.autoReservation(reservation.getAutoReservation())
 				.hospitalAddress(reservation.getHospital().getAddress())
+				.hospitalLatitude(reservation.getHospital().getLatitude())
+				.hospitalLongitude(reservation.getHospital().getLongitude())
 				.kakaoUrl(reservation.getHospital().getKakaoUrl())
 				.build());
 		}
