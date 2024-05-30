@@ -35,8 +35,7 @@ public class ChatController {
 	@PostMapping("/msg")
 	@ResponseBody
 	public ApiResponse<String> sendMessage(@RequestBody Chat msg) throws FileNotFoundException, IOException {
-		String jsonFilePath = Paths.get(jsonFile.getURI()).toString();
-		File file = new File(jsonFilePath);
+		File file = new File("/BOOT-INF/classes/test-iwdw-e3b736d87722.json");
 		String CREDENTIAL_FILE = file.getAbsolutePath();
 		String PROJECT_ID = "test-iwdw";
 		ChatConfig client = new ChatConfig(CREDENTIAL_FILE, PROJECT_ID);
