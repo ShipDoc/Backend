@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shipdoc.global.enums.statuscode.ErrorStatus;
 import com.shipdoc.global.response.ApiResponse;
+import com.shipdoc.global.security.jwt.JwtLoginResponseDto;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +36,8 @@ public class JwtLoginFailureHandler implements AuthenticationFailureHandler {
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(400);
 		response.getWriter().write(objectMapper.writeValueAsString(
-			ApiResponse.onFailure(ErrorStatus._BAD_REQUEST.getCode(),ErrorStatus._BAD_REQUEST.getMessage(), "로그인에 실패했습니다.")));
+			ApiResponse.onFailure(ErrorStatus._BAD_REQUEST.getCode(),ErrorStatus._BAD_REQUEST.getMessage(),
+				JwtLoginResponseDto.builder().userName(null).validToken(false))));
 		log.info("Jwt Login fail :: error = {}", exception.getMessage());
 	}
 }
