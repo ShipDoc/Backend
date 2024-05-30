@@ -44,6 +44,13 @@ jobs:
         env:
           APPLICATION: ${{ secrets.APPLICATION }}
 
+      - name: make chatBot Json
+        run: |
+          mkdir -p src/main/resources
+          echo "$CHAT_BOT_JSON" > src/main/resources/test-iwdw-e3b736d87722.json
+        env:
+          APPLICATION: ${{ secrets.APPLICATION }}
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -66,7 +73,7 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/shipdoc:latest
             sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run -d --log-driver=syslog -p 8080:8080 -e TZ=Asia/Seoul -e SPRING_PROFILES_ACTIVE= ${{ secrets.DOCKER_USERNAME }}/shipdoc:latest
+            sudo docker run -v /home/ubuntu/credentials:/credentials -d --log-driver=syslog -p 8080:8080 -e TZ=Asia/Seoul -e SPRING_PROFILES_ACTIVE= ${{ secrets.DOCKER_USERNAME }}/shipdoc:latest
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
             sudo docker image prune -a -f
    
