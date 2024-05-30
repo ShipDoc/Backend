@@ -8,10 +8,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shipdoc.domain.Member.entity.Member;
-import com.shipdoc.domain.Member.repository.MemberRepository;
 import com.shipdoc.global.response.ApiResponse;
-import com.shipdoc.global.security.jwt.JwtLoginResponseDto;
 import com.shipdoc.global.security.jwt.JwtService;
 
 import jakarta.servlet.ServletException;
@@ -29,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 	private final JwtService jwtService;
 	private final ObjectMapper objectMapper;
-	private final MemberRepository memberRepository;
 
 	/**
 	 * 인증에 성공하면 Access Token과 Refresh Token을 생성한 후 반환
@@ -40,10 +36,9 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 		UserDetails principal = (UserDetails)authentication.getPrincipal();
 		String loginId = principal.getUsername();
 		log.info("Jwt Login Success :: Login ID = {}", loginId);
-		Member member = memberRepository.findByLoginId(loginId).get();
 		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().write(objectMapper.writeValueAsString(
-			ApiResponse.onSuccess(JwtLoginResponseDto.builder().userName(member.getPatientList().get(0).getName()).validToken(true))));
+			ApiResponse.onSuccess("로그인에 성공했습니다.")));
 		loginSuccess(response, loginId);
 	}
 
