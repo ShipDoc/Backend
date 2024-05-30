@@ -31,6 +31,8 @@ public class ReservationListDto {
 		private String kakaoUrl; // 병원 지도
 		private Long estimatedWaitTime; // 예상 대기 시간
 		private Long estimatedWaitPatient; // 대기자 현황
+
+		private String patientPhone;
 	}
 
 	// 예약 내역 조회

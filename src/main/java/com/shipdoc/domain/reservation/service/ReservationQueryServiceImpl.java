@@ -53,6 +53,7 @@ public class ReservationQueryServiceImpl implements ReservationQueryService {
 				.hospitalLatitude(reservation.getHospital().getLatitude())
 				.hospitalLongitude(reservation.getHospital().getLongitude())
 				.kakaoUrl(reservation.getHospital().getKakaoUrl())
+				.patientPhone(reservation.getPhoneNumber())
 				.build());
 		}
 
