@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "test-iwdw",
+  "private_key_id": "e3b736d877228b86d44b71f30e9892454bdacb06",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+Wxfc1Uj4/UmM\nkuo3XIg3+xkGS1V/pskMF2foDkkkWmiyF2uWSrqW3XZRNUOxa/JpU6RIxa9N2pl4\nEpjqyf0kn8smna5YWRby4tIsIhMKWn5ai+R6GnsYh1RqTGS26cllj9njGtd5fekO\nP2Q340wW3drD7iM+m0c6Xg+auO/d1j+dfYvF7YbE36H1JU11CxSoSYkNTfcUB1v9\na23bLNZdhWPrd+9nURAVjg7z5CP348J9Nhz8vahd4Q4659OG5JpSeXhx0GMr5U1S\nUq0/vy94KJzQfXaW6n1q9mXgBGp83wZfG3yVZaE5bODeylSnhku1ewbMTURbFDMk\n5vcRkINtAgMBAAECggEAEuKqvWgTs1A9ycqRnih6A0PQOcWjl+SOMbroviccrpSh\nqnmUXPbRCEK0iF4Gd0XEaRq5Q9cJC2pSq4z8yt57VPTdjNk8ANvl4PcL7wD6bp6H\nxqf2ZP7Xk5lpkJo/q74KEx9weI2jLxSE2LsFUF4moGYmXCX2LTHuoSXP2oPamGGL\nDVE1veUkiLbZqUcNa8JkSqerWkuh0jIVzMPlbpEDw08vrNPahWDvtghZi2T7DYOn\nUrOxaEcVu7xdhXaJ/5D5YbOI8RVRJknEN/BjrU6/Nzmgw7mFUedNzxvImSAxAR0C\n8nYYf/GfZ+LS+uO8Ly3YbBpeaAT0d/BZx80FFjMAaQKBgQD6Fgpz21axXRk0v2Is\nOC8XbNqIMskkw25ZghNCYRYlx1Dr066k8+3XuAakqq5IR35eBpR3NLBITYxPURkp\ndhHaxkd6ZxaJ9wiXRXCPx/w5HO3q+4WUN1KJfHPsCYGL3vyKRpwyNrlVEOvAdfn0\nZHCEI+FpMYp6eafj/DverX/bywKBgQDC23XOzCinB7r+aSeUuYUhpl7wZbODQvp/\nBd5sG7wKlFtAa26aK8BA/Tiv0/A630zeqWHH9TuE9n+w50j5/NzKTyG+3TOAFSus\nI9pVn/vLrXwNrI+Vss1umaN7TFyEAjSI34YGVSPbpqUUNxkD79m2e62EoIjQJRyN\nNDZcOJgmpwKBgCA9sTFIiL+q8fHz7nMm9yM8/FtsuLPNoi9V7qezHojWTl9o1e4c\nKICUD/8wpfFZjjgO/xrzJvrbTIh5OxY2S4z53QMxwR0eRPRDloRi0uiGC0ItFQaL\nr09cRRGcFCB1KfelrMNofLIz0UDptMTGIh9XBNtr8J9jibqBrTJDCeXLAoGAD2Ft\nQh6BUvXcP7qjIi0mogpU0hrk+YZu6VnYPaZOyHL/ZO1V9JtheH/EWrSa8LqxgZ3T\nFwp3YT5nw9ntu7XG470tR7iEGScSpGrMEBgpsuEFurqVNta/OmysJ85WOyFFbkxe\nct+DjhHwU9Epi1MCV1IZ1y8ovW1AfLDTXaIl+F8CgYEA2IfQspbu6IR9bwskVuXy\nXnhqr95CqhMoGS/IqmW29PMEKN34oOQuUyV7GTMGloWFjdlKakWfw20O+8cvTwmn\nYFLNZsBqG0DYErO4UAeIPmPzuvnQ0ROIpT0tITCe0voKEhSba3pc1qLvsRvKtOQG\nulr9zZKVJbigvmlxWyHFY3I=\n-----END PRIVATE KEY-----\n",
+  "client_email": "chat-bot-easydoc@test-iwdw.iam.gserviceaccount.com",
+  "client_id": "116236035281775588236",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chat-bot-easydoc%40test-iwdw.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
